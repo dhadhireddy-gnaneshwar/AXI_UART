@@ -1,0 +1,16 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.sim/sim_1/synth/func/xsim/AXI_TOP_TEST_func_synth.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module AR_FIFO
+INFO: [VRFC 10-311] analyzing module AW_FIFO
+INFO: [VRFC 10-311] analyzing module AXI_MASTER
+INFO: [VRFC 10-311] analyzing module AXI_TOP_WRAPPER
+INFO: [VRFC 10-311] analyzing module FIFO
+INFO: [VRFC 10-311] analyzing module FIFO__1
+INFO: [VRFC 10-311] analyzing module FIFO__parameterized0
+INFO: [VRFC 10-311] analyzing module FIFO__parameterized1
+INFO: [VRFC 10-311] analyzing module READ_BUFFER
+INFO: [VRFC 10-311] analyzing module R_FIFO
+INFO: [VRFC 10-311] analyzing module WRITE_BUFFER
+INFO: [VRFC 10-311] analyzing module W_FIFO
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_TOP_TEST.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module AXI_TOP_TEST

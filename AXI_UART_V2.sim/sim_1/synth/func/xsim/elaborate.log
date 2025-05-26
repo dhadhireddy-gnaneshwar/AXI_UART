@@ -1,0 +1,44 @@
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.2/bin/unwrapped/win64.o/xelab.exe -wto 2e702ec8ccac4b4b9e6e27ddbcda8bf7 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L secureip --snapshot AXI_TOP_TEST_func_synth xil_defaultlib.AXI_TOP_TEST xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-5021] port 'read_wdata' is not connected on this instance [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_TOP_TEST.v:66]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module unisims_ver.LUT4
+Compiling module unisims_ver.FDRE_default
+Compiling module unisims_ver.LUT5
+Compiling module unisims_ver.LUT6
+Compiling module unisims_ver.x_lut3_mux8
+Compiling module unisims_ver.LUT3
+Compiling module unisims_ver.RB36_INTERNAL_VLOG(RAM_MODE="SDP...
+Compiling module unisims_ver.RAMB36E1(RAM_MODE="SDP",READ_WID...
+Compiling module unisims_ver.x_lut2_mux4
+Compiling module unisims_ver.LUT2
+Compiling module unisims_ver.x_lut1_mux2
+Compiling module unisims_ver.LUT1
+Compiling module xil_defaultlib.FIFO
+Compiling module xil_defaultlib.AR_FIFO
+Compiling module unisims_ver.FDSE_default
+Compiling module xil_defaultlib.FIFO__parameterized1
+Compiling module unisims_ver.CARRY4
+Compiling module xil_defaultlib.R_FIFO
+Compiling module xil_defaultlib.READ_BUFFER
+Compiling module xil_defaultlib.FIFO__1
+Compiling module xil_defaultlib.AW_FIFO
+Compiling module unisims_ver.GND
+Compiling module xil_defaultlib.FIFO__parameterized0
+Compiling module xil_defaultlib.W_FIFO
+Compiling module xil_defaultlib.WRITE_BUFFER
+Compiling module unisims_ver.BUFG
+Compiling module unisims_ver.IBUF
+Compiling module unisims_ver.OBUF
+Compiling module xil_defaultlib.AXI_MASTER
+Compiling module xil_defaultlib.AXI_TOP_WRAPPER
+Compiling module xil_defaultlib.AXI_TOP_TEST
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot AXI_TOP_TEST_func_synth

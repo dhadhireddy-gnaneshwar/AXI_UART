@@ -1,0 +1,25 @@
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.2/bin/unwrapped/win64.o/xelab.exe -wto 2e702ec8ccac4b4b9e6e27ddbcda8bf7 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot AXI_TOP_TEST_behav xil_defaultlib.AXI_TOP_TEST xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-5021] port 'read_wdata' is not connected on this instance [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_TOP_TEST.v:66]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.AXI_MASTER
+Compiling module xil_defaultlib.FIFO(DATA_WIDTH=50)
+Compiling module xil_defaultlib.AW_FIFO_default
+Compiling module xil_defaultlib.FIFO(DATA_WIDTH=72,DEPTH=1024)
+Compiling module xil_defaultlib.W_FIFO(W_DEPTH=1024)
+Compiling module xil_defaultlib.WRITE_BUFFER(W_DEPTH=1024)
+Compiling module xil_defaultlib.AR_FIFO_default
+Compiling module xil_defaultlib.FIFO(DATA_WIDTH=71,DEPTH=1024)
+Compiling module xil_defaultlib.R_FIFO(R_DEPTH=1024)
+Compiling module xil_defaultlib.READ_BUFFER(R_DEPTH=1024)
+Compiling module xil_defaultlib.AXI_TOP_WRAPPER
+Compiling module xil_defaultlib.AXI_TOP_TEST
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot AXI_TOP_TEST_behav

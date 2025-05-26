@@ -1,0 +1,7 @@
+0.6
+2019.2
+Nov  6 2019
+21:57:16
+C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.sim/sim_1/synth/func/xsim/AXI_TOP_TEST_func_synth.v,1747802230,verilog,,C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_TOP_TEST.v,,AR_FIFO;AW_FIFO;AXI_MASTER;AXI_TOP_WRAPPER;FIFO;FIFO__1;FIFO__parameterized0;FIFO__parameterized1;READ_BUFFER;R_FIFO;WRITE_BUFFER;W_FIFO;glbl,,,,,,,,
+C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_MASTER_TEST.v,1747289943,verilog,,,,AXI_MASTER_tb,,,,,,,,
+C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_TOP_TEST.v,1747312534,verilog,,,,AXI_TOP_TEST,,,,,,,,
