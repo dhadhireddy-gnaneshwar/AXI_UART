@@ -34,36 +34,41 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
      parameter CONTL_REG_WIDTH = 32,
      parameter STATUS_REG_WIDTH =32,
      parameter UART_TX_FIFO_DEPTH = 32,
-     parameter UART_RX_FIFO_DEPTH = 32)(
+     parameter UART_RX_FIFO_DEPTH = 32,
+     parameter BASE_ADDRESS  = 16'hE100,
+     parameter START_OFFSET = 16'h0000
+     )(
      //WRITE CONTROLLER PORT DECLARATION
      input rd_clk,
      input rst,
      //FIFO AW READ PORTS
     output addr_read,
-    input [ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+1:0] out_addr,
-    input awfull,
-    input awempty,
-    input addr_read_ready,
+    input  [ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+1:0] out_addr,
+    input  awfull,
+    input  awempty,
+    input  addr_read_ready,
     //FIFO W READ PORTS
     output read_wdata,
-    input w_full,
-    input w_empty,
-    input [DATA_WIDTH+(DATA_WIDTH/8)-1:0] out_wdata,
+    input  w_full,
+    input  w_empty,
+    input  [DATA_WIDTH+(DATA_WIDTH/8)-1:0] out_wdata,
      //B - CHANNEL
-    output bvalid,
+    output  bvalid,
     output [RESPONSE_WIDTH-1:0] bresp,
     output [ID_WIDTH-1:0] bid,
-    input bready,
+    input  bready,
     //UART CONTROLLER PORT DECLARATION
-    input [7:0] rx_byte,
-    output [7:0] tx_byte,
-    output  [CONTL_REG_WIDTH-1:0] ctrl_reg,
-    input   [STATUS_REG_WIDTH-1:0] status_reg
+    output [DATA_WIDTH-1:0] in_data,
+    output [1:0] mode,
+    input  [STATUS_REG_WIDTH-1:0] status_reg
     );
     
     localparam DATA_BYTES = DATA_WIDTH/8;
     localparam BYTES_WIDTH = $clog2(DATA_BYTES);
     localparam ALIGN_BITS = $clog2(ADDR_WIDTH/8);
+    localparam STATUS_REG_OFFSET = START_OFFSET+DATA_BYTES-16'h4;
+    localparam CTRL_REG_OFFSET = STATUS_REG_OFFSET+16'h4;
+    localparam INTRPT_REG_OFFSET = CTRL_REG_OFFSET+16'h4;
     localparam AW_FIFO_WIDTH = ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+2;
     localparam IDEL = 2'b00, READ_TX_DATA =2'b01, DECODE = 2'b10;
     reg [BYTES_WIDTH:0] byte_count ;
