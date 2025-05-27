@@ -36,7 +36,9 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
      parameter UART_TX_FIFO_DEPTH = 32,
      parameter UART_RX_FIFO_DEPTH = 32,
      parameter BASE_ADDRESS  = 16'hE100,
-     parameter START_OFFSET = 16'h0000
+     parameter START_OFFSET = 16'h0000,
+     parameter END_OFFSET  = 16'h00810,
+     parameter OFFSET_START_BITS = 16
      )(
      //WRITE CONTROLLER PORT DECLARATION
      input rd_clk,
@@ -53,26 +55,35 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     input  w_empty,
     input  [DATA_WIDTH+(DATA_WIDTH/8)-1:0] out_wdata,
      //B - CHANNEL
-    output  bvalid,
-    output [RESPONSE_WIDTH-1:0] bresp,
-    output [ID_WIDTH-1:0] bid,
+    output  reg bvalid,
+    output reg [RESPONSE_WIDTH-1:0] bresp,
+    output reg [ID_WIDTH-1:0] bid,
     input  bready,
     //UART CONTROLLER PORT DECLARATION
     output [DATA_WIDTH-1:0] in_data,
-    output [1:0] mode,
+    output reg [1:0] mode,
     input  [STATUS_REG_WIDTH-1:0] status_reg
     );
     
+    //======================= DATA BYTE AND TOTAL ADDRESS WIDTH CALCULATION ========================\\    
     localparam DATA_BYTES = DATA_WIDTH/8;
     localparam BYTES_WIDTH = $clog2(DATA_BYTES);
     localparam ALIGN_BITS = $clog2(ADDR_WIDTH/8);
-    localparam STATUS_REG_OFFSET = START_OFFSET+DATA_BYTES-16'h4;
-    localparam CTRL_REG_OFFSET = STATUS_REG_OFFSET+16'h4;
-    localparam INTRPT_REG_OFFSET = CTRL_REG_OFFSET+16'h4;
     localparam AW_FIFO_WIDTH = ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+2;
-    localparam IDEL = 2'b00, READ_TX_DATA =2'b01, DECODE = 2'b10;
+    //========================ADDRESS OFFSET CALCULATION ===========================================\\
+    localparam STATUS_REG_ADDR = START_OFFSET+DATA_BYTES-16'h4;
+    localparam CTRL_REG_ADDR = STATUS_REG_ADDR+16'h4;
+    localparam INTRPT_REG_ADDR = CTRL_REG_ADDR+16'h4;
+    localparam TX_ADDRESS_OFFSET_START = INTRPT_REG_ADDR + 16'h4;
+    localparam TX_ADDRESS_OFFSET_END = TX_ADDRESS_OFFSET_START + (DATA_BYTES * UART_TX_FIFO_DEPTH);
+    localparam TOTAL_BYTES = ((DATA_BYTES)*(UART_RX_FIFO_DEPTH+UART_TX_FIFO_DEPTH))+(3*4)-1;
+    //======================== STATE DECLARATION ===================================================\\
+    localparam IDEL = 2'b00, READ_TX_DATA =2'b01, DECODE = 2'b10, SEND_DATA = 2'B11 , STS =2'b01, CRTL = 2'b10, INTRT = 2'b11;
+    
+    localparam SLVERR = 3'b010, DECERR = 3'b011,OKAY = 000;
+
     reg [BYTES_WIDTH:0] byte_count ;
-    reg [1:0] state;
+    reg [1:0] state,r_mode;
     
     //STATUS REG DATA
     wire r_data_ready, over_run, parity_error, frame_error, rx_fifo_full, rx_fifo_empty, tx_fifo_empty, tx_fifo_full;
@@ -107,7 +118,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     assign frame_error   = status_reg[3];
     assign rx_fifo_empty = status_reg[4];
     assign rx_fifo_full  = status_reg[5];
-    assign tx_fifo_full  = status_reg[6];
+    assign tx_fifo_empty  = status_reg[6];
     assign tx_fifo_full  = status_reg[7]; 
     assign tx_fifo_left  = status_reg[15:8];
     assign rx_fifo_left  = status_reg[23:16];
@@ -141,7 +152,11 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
             if(rst)
                 begin
                     byte_count <=0;
-                    
+                    state <= IDEL;
+                    r_mode <= IDEL;
+                    bvalid<=0;
+                    bresp <= 00;
+                    bid <= 0;
                 end
             else
                 begin
@@ -164,11 +179,66 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                             end
                         DECODE:
                             begin
-                                if(awaddr[ALIGN_BITS-1:0] == 0 && (awaddr[15:0] <= 16'h0000))
+                                if(awaddr[ALIGN_BITS-1:0] == 0 && (awaddr >={BASE_ADDRESS,START_OFFSET}  && awaddr<={BASE_ADDRESS,TOTAL_BYTES}) && tx_fifo_left>=(awlen*DATA_BYTES))
                                     begin
-                                        
+                                        if(awaddr[OFFSET_START_BITS-1:0] == CTRL_REG_ADDR)
+                                            begin
+                                                state <= SEND_DATA;
+                                                r_mode <= CRTL;
+                                            end
+                                        else if( awaddr[OFFSET_START_BITS-1:0] == STATUS_REG_ADDR) 
+                                            begin
+                                                bvalid <=1;
+                                                bresp <= SLVERR;
+                                                bresp <= awid;
+                                                if(bvalid && bready)
+                                                    begin
+                                                        state <= IDEL;
+                                                        bvalid <=0;
+                                                    end
+                                            end
+                                        else if( awaddr[OFFSET_START_BITS-1:0] == INTRPT_REG_ADDR)
+                                            begin
+                                                state <= SEND_DATA;
+                                                r_mode <= INTRT;
+                                            end
+                                        else if( awaddr[OFFSET_START_BITS-1:0] >= TX_ADDRESS_OFFSET_START && awaddr[OFFSET_START_BITS-1:0] <= TX_ADDRESS_OFFSET_END)
+                                            begin
+                                            
+                                            end
+                                        else
+                                            begin
+                                                bvalid <=1;
+                                                bresp <= SLVERR;
+                                                bresp <= awid;
+                                                if(bvalid && bready)
+                                                    begin
+                                                        state <= IDEL;
+                                                        bvalid <=0;
+                                                    end
+                                            end
+                                    end
+                                else
+                                    begin
+                                        bvalid <=1;
+                                        bresp <= SLVERR;
+                                        bresp <= awid;
+                                        if(bvalid && bready)
+                                            begin
+                                                state <= IDEL;
+                                                bvalid <=0;
+                                            end
                                     end
                             end
+//                        SEND_DATA :
+//                            begin
+//                                case(r_mode)
+//                                    CTRL :
+//                                        begin
+//                                            if(
+//                                        end
+//                                endcase
+//                            end
                     endcase
                 end
         end
