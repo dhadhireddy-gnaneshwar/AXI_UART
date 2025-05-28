@@ -51,9 +51,9 @@ module FIFO #(parameter DATA_WIDTH=32,
     reg [COUNTER_WIDTH :0] wr_pointer, rd_pointer;
     reg [DATA_WIDTH-1 : 0] sync_1,sync_2;
     
-    assign wr_ready = !(wr_state==IDEL);
-    assign rd_ready = !(rd_state==IDEL);
-    assign full = ((wr_pointer + 1) % DEPTH) == rd_pointer;
+    assign wr_ready = ~(!(wr_state==IDEL));
+    assign rd_ready = ~(!(rd_state==IDEL));
+    assign full =  rst?0:((wr_pointer + 1) % DEPTH) == rd_pointer;
     assign empty = (wr_pointer == rd_pointer);
     
 //======= WRITE LOGIC DEFINATION =======\\  

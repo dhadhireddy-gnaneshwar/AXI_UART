@@ -1,13 +1,23 @@
 module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
-                 parameter DATA_WIDTH = 64,
-                 parameter ID_WIDTH = 4,
-                 parameter SIZE_WIDTH = 4,
-                 parameter LEN_WIDTH = 8,
-                 parameter RESPONSE_WIDTH = 3,
-                 parameter AR_DEPTH =32,
-                 parameter W_DEPTH =1024,
-                 parameter AW_DEPTH =32,
-                 parameter R_DEPTH =1024)
+     parameter DATA_WIDTH = 64,
+     parameter ID_WIDTH = 4,
+     parameter SIZE_WIDTH = 4,
+     parameter LEN_WIDTH = 8,
+     parameter RESPONSE_WIDTH = 3,
+     parameter AR_DEPTH =32,
+     parameter W_DEPTH =32,
+     parameter AW_DEPTH =32,
+     parameter R_DEPTH =32,
+     parameter ADDR_OFFSET = 16'h E000,
+     parameter CONTL_REG_WIDTH = 32,
+     parameter STATUS_REG_WIDTH =32,
+     parameter UART_TX_FIFO_DEPTH = 32,
+     parameter UART_RX_FIFO_DEPTH = 32,
+     parameter BASE_ADDRESS  = 16'hE100,
+     parameter START_OFFSET = 16'h0000,
+     parameter END_OFFSET  = 16'h00810,
+     parameter OFFSET_START_BITS = 16
+     )
 (
     input trigger,
     input r_trigger,
@@ -15,21 +25,22 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     input areset,
     input rd_clk,
     input [ADDR_WIDTH-1:0] in_addr,
+    input [DATA_WIDTH-1:0] in_data,
     input [ID_WIDTH-1:0] in_id,
     input [LEN_WIDTH-1:0] in_len,
     input [1:0] burst_type,
     input [(DATA_WIDTH/8)-1:0] in_strb,
-    //FIFO AW READ PORTS
-    input addr_read,
-    output [ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+1:0] out_addr,
-    output awfull,
-    output awempty,
-    output addr_read_ready,
-    //FIFO W READ PORTS
-    input read_wdata,
-    output w_full,
-    output w_empty,
-    output [DATA_WIDTH+(DATA_WIDTH/8)-1:0] out_wdata,
+//    //FIFO AW READ PORTS
+//    input addr_read,
+//    output [ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+1:0] out_addr,
+//    output awfull,
+//    output awempty,
+//    output addr_read_ready,
+//    //FIFO W READ PORTS
+//    input read_wdata,
+//    output w_full,
+//    output w_empty,
+//    output [DATA_WIDTH+(DATA_WIDTH/8)-1:0] out_wdata,
     //FIFO AR READ PORTS
     input ar_addr_read,
     output ar_read_ready,
@@ -45,7 +56,14 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     
     output [DATA_WIDTH-1:0] read_data_out,
     output [RESPONSE_WIDTH-1:0] read_resp,
-    output [ID_WIDTH-1:0] read_id
+    output [ID_WIDTH-1:0] read_id,
+    output wvalid_o,
+    //write controllrt ports
+    input  [DATA_WIDTH-1:0] tx_data,
+    output tx_data_valid,
+    input [OFFSET_START_BITS-1:0] addr,
+    output [$clog2(UART_TX_FIFO_DEPTH*(DATA_WIDTH/8))-1:0] tx_fifo_mem_left,
+    output tx_ready
 );
 
     wire [ADDR_WIDTH-1:0] awaddr;
@@ -62,10 +80,10 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     wire [(DATA_WIDTH/8)-1:0] wstrb;
     wire wlast;
 
-    wire bvalid;
-    wire [RESPONSE_WIDTH-1:0] bresp;
-    wire [ID_WIDTH-1:0] bid;
-    wire bready;
+    wire w_bvalid;
+    wire [RESPONSE_WIDTH-1:0] w_bresp;
+    wire [ID_WIDTH-1:0] w_bid;
+    wire w_bready;
 
     wire arvalid;
     wire [ADDR_WIDTH-1:0] araddr;
@@ -81,7 +99,10 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     wire [ID_WIDTH-1:0] rid;
     wire rlast;
     wire [RESPONSE_WIDTH-1:0] rresp;
-
+    wire [ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+1:0] out_addr_o;
+    wire out_data_ready;
+    assign out_data_ready = read_wdata ;
+    assign wvalid_o = wvalid;
 
 
     AXI_MASTER #(
@@ -98,6 +119,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
         .in_id(in_id),
         .in_len(in_len),
         .burst_type(burst_type),
+        .in_data(in_data),
         .in_strb(in_strb),
         .aclk(aclk),
         .areset(areset),
@@ -113,10 +135,10 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
         .wdata(wdata),
         .wstrb(wstrb),
         .wlast(wlast),
-        .bvalid(bvalid),
-        .bresp(bresp),
-        .bid(bid),
-        .bready(bready),
+        .bvalid(w_bvalid),
+        .bresp(w_bresp),
+        .bid(w_bid),
+        .bready(w_bready),
         .arready(arready),
         .araddr(araddr),
         .arid(arid),
@@ -204,7 +226,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
                 // ADDRESS WRITE Read Port Signals
                 .rd_clk(rd_clk),           
                 .addr_read(addr_read),        
-                .out_addr(out_addr),         
+                .out_addr(out_addr_o),         
                 .addr_read_ready(addr_read_ready) , 
                 // WRITE DATA W FIFO PORT
                 .wvalid(wvalid),
@@ -267,4 +289,52 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
         
 );
 
+WRITE_BUFFER_CONTROLLER #(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH),
+    .ID_WIDTH(ID_WIDTH),
+    .SIZE_WIDTH(SIZE_WIDTH),
+    .LEN_WIDTH(LEN_WIDTH),
+    .RESPONSE_WIDTH(RESPONSE_WIDTH),
+    .AR_DEPTH(AR_DEPTH),
+    .W_DEPTH(W_DEPTH),
+    .AW_DEPTH(AW_DEPTH),
+    .R_DEPTH(R_DEPTH),
+    .ADDR_OFFSET(ADDR_OFFSET),
+    .CONTL_REG_WIDTH(CONTL_REG_WIDTH),
+    .STATUS_REG_WIDTH(STATUS_REG_WIDTH),
+    .UART_TX_FIFO_DEPTH(UART_TX_FIFO_DEPTH),
+    .UART_RX_FIFO_DEPTH(UART_RX_FIFO_DEPTH),
+    .BASE_ADDRESS(BASE_ADDRESS),
+    .START_OFFSET(START_OFFSET),
+    .END_OFFSET(END_OFFSET),
+    .OFFSET_START_BITS(OFFSET_START_BITS)
+) write_buffer_controller_inst (
+    .rd_clk(rd_clk),            // inp
+    .rst(areset),               // inp
+    .addr_read(addr_read),         // o
+    .out_addr(out_addr_o),          // 
+    .awfull(awfull),            // inp
+    .awempty(awempty),           
+    .addr_read_ready(addr_read_ready), 
+    .read_wdata(read_wdata),        
+    .out_data_ready(out_data_ready),   
+    .w_full(w_full),            
+    .w_empty(w_empty),           
+    .out_wdata(out_wdata),        
+    .bvalid(w_bvalid),            
+    .bresp(w_bresp),             
+    .bid(w_bid),               
+    .bready(w_bready),            
+    .tx_data(tx_data),           
+    .tx_data_valid(tx_data_valid),     
+    .addr(addr),              
+    .tx_fifo_mem_left(tx_fifo_mem_left),
+    .tx_ready(tx_ready)           // in
+);
+
+// reg [7:0] achara ;
+// initial achara = 8'h41;
+ 
+// $display("the data is %c ===================",achara);
 endmodule

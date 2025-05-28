@@ -16,12 +16,11 @@ Command: synth_design -top AXI_TOP_WRAPPER -part xc7z045ffg900-2 -flatten_hierar
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7z045'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z045'
-INFO: [Common 17-86] Your Synthesis license expires in 2 day(s)
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 11476 
-WARNING: [Synth 8-2507] parameter declaration becomes local in AXI_MASTER with formal parameter declaration list [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:87]
+INFO: Helper process launched with PID 18764 
+WARNING: [Synth 8-2507] parameter declaration becomes local in AXI_MASTER with formal parameter declaration list [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:88]
 ---------------------------------------------------------------------------------
-Starting Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 727.660 ; gain = 246.078
+Starting Synthesize : Time (s): cpu = 00:00:02 ; elapsed = 00:00:04 . Memory (MB): peak = 728.062 ; gain = 246.871
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'AXI_TOP_WRAPPER' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:1]
 	Parameter ADDR_WIDTH bound to: 32 - type: integer 
@@ -31,9 +30,18 @@ INFO: [Synth 8-6157] synthesizing module 'AXI_TOP_WRAPPER' [C:/Users/demon/INTER
 	Parameter LEN_WIDTH bound to: 8 - type: integer 
 	Parameter RESPONSE_WIDTH bound to: 3 - type: integer 
 	Parameter AR_DEPTH bound to: 32 - type: integer 
-	Parameter W_DEPTH bound to: 1024 - type: integer 
+	Parameter W_DEPTH bound to: 32 - type: integer 
 	Parameter AW_DEPTH bound to: 32 - type: integer 
-	Parameter R_DEPTH bound to: 1024 - type: integer 
+	Parameter R_DEPTH bound to: 32 - type: integer 
+	Parameter ADDR_OFFSET bound to: 16'b1110000000000000 
+	Parameter CONTL_REG_WIDTH bound to: 32 - type: integer 
+	Parameter STATUS_REG_WIDTH bound to: 32 - type: integer 
+	Parameter UART_TX_FIFO_DEPTH bound to: 32 - type: integer 
+	Parameter UART_RX_FIFO_DEPTH bound to: 32 - type: integer 
+	Parameter BASE_ADDRESS bound to: 16'b1110000100000000 
+	Parameter START_OFFSET bound to: 16'b0000000000000000 
+	Parameter END_OFFSET bound to: 16'b0000100000010000 
+	Parameter OFFSET_START_BITS bound to: 16 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'AXI_MASTER' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:23]
 	Parameter ADDR_WIDTH bound to: 32 - type: integer 
 	Parameter DATA_WIDTH bound to: 64 - type: integer 
@@ -43,17 +51,17 @@ INFO: [Synth 8-6157] synthesizing module 'AXI_MASTER' [C:/Users/demon/INTERNSHIP
 	Parameter RESPONSE_WIDTH bound to: 3 - type: integer 
 	Parameter IDEL bound to: 2'b00 
 	Parameter START bound to: 2'b01 
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:144]
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:167]
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:191]
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:211]
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:233]
-WARNING: [Synth 8-6014] Unused sequential element r_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:138]
-WARNING: [Synth 8-6014] Unused sequential element ar_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:138]
-WARNING: [Synth 8-6014] Unused sequential element b_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:138]
-WARNING: [Synth 8-6014] Unused sequential element w_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:138]
-WARNING: [Synth 8-6014] Unused sequential element aw_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:138]
-WARNING: [Synth 8-6014] Unused sequential element r_arlen_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:218]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:145]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:168]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:192]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:212]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:234]
+WARNING: [Synth 8-6014] Unused sequential element r_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:139]
+WARNING: [Synth 8-6014] Unused sequential element ar_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:139]
+WARNING: [Synth 8-6014] Unused sequential element b_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:139]
+WARNING: [Synth 8-6014] Unused sequential element w_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:139]
+WARNING: [Synth 8-6014] Unused sequential element aw_next_state_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:139]
+WARNING: [Synth 8-6014] Unused sequential element r_arlen_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:219]
 INFO: [Synth 8-6155] done synthesizing module 'AXI_MASTER' (1#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v:23]
 INFO: [Synth 8-6157] synthesizing module 'WRITE_BUFFER' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER.v:23]
 	Parameter ADDR_WIDTH bound to: 32 - type: integer 
@@ -62,7 +70,7 @@ INFO: [Synth 8-6157] synthesizing module 'WRITE_BUFFER' [C:/Users/demon/INTERNSH
 	Parameter SIZE_WIDTH bound to: 4 - type: integer 
 	Parameter LEN_WIDTH bound to: 8 - type: integer 
 	Parameter RESPONSE_WIDTH bound to: 3 - type: integer 
-	Parameter W_DEPTH bound to: 1024 - type: integer 
+	Parameter W_DEPTH bound to: 32 - type: integer 
 	Parameter AW_DEPTH bound to: 32 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'AW_FIFO' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AW_FIFO.v:1]
 	Parameter ADDR_WIDTH bound to: 32 - type: integer 
@@ -92,14 +100,14 @@ INFO: [Synth 8-6157] synthesizing module 'W_FIFO' [C:/Users/demon/INTERNSHIP/src
 	Parameter SIZE_WIDTH bound to: 4 - type: integer 
 	Parameter LEN_WIDTH bound to: 8 - type: integer 
 	Parameter RESPONSE_WIDTH bound to: 3 - type: integer 
-	Parameter W_DEPTH bound to: 1024 - type: integer 
+	Parameter W_DEPTH bound to: 32 - type: integer 
 	Parameter WDATA_FIFO_WIDTH bound to: 72 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'FIFO__parameterized0' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/FIFO.v:23]
 	Parameter DATA_WIDTH bound to: 72 - type: integer 
-	Parameter DEPTH bound to: 1024 - type: integer 
-	Parameter COUNTER_WIDTH bound to: 10 - type: integer 
+	Parameter DEPTH bound to: 32 - type: integer 
+	Parameter COUNTER_WIDTH bound to: 5 - type: integer 
 	Parameter BYTES bound to: 9 - type: integer 
-	Parameter BYTE_POINTER_WIDTH bound to: 13 - type: integer 
+	Parameter BYTE_POINTER_WIDTH bound to: 8 - type: integer 
 	Parameter IDEL bound to: 2'b00 
 	Parameter WRITE bound to: 2'b01 
 	Parameter READ bound to: 2'b10 
@@ -107,6 +115,7 @@ INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/demo
 INFO: [Synth 8-6155] done synthesizing module 'FIFO__parameterized0' (3#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/FIFO.v:23]
 INFO: [Synth 8-6155] done synthesizing module 'W_FIFO' (4#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/W_FIFO.v:1]
 INFO: [Synth 8-6155] done synthesizing module 'WRITE_BUFFER' (5#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER.v:23]
+WARNING: [Synth 8-689] width (1) of port connection 'out_wdata' does not match port width (72) of module 'WRITE_BUFFER' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:240]
 INFO: [Synth 8-6157] synthesizing module 'READ_BUFFER' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/READ_BUFFER.v:23]
 	Parameter ADDR_WIDTH bound to: 32 - type: integer 
 	Parameter DATA_WIDTH bound to: 64 - type: integer 
@@ -115,7 +124,7 @@ INFO: [Synth 8-6157] synthesizing module 'READ_BUFFER' [C:/Users/demon/INTERNSHI
 	Parameter LEN_WIDTH bound to: 8 - type: integer 
 	Parameter RESPONSE_WIDTH bound to: 3 - type: integer 
 	Parameter AR_DEPTH bound to: 32 - type: integer 
-	Parameter R_DEPTH bound to: 1024 - type: integer 
+	Parameter R_DEPTH bound to: 32 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'AR_FIFO' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AR_FIFO.v:23]
 	Parameter ADDR_WIDTH bound to: 32 - type: integer 
 	Parameter DATA_WIDTH bound to: 64 - type: integer 
@@ -133,7 +142,7 @@ INFO: [Synth 8-6157] synthesizing module 'R_FIFO' [C:/Users/demon/INTERNSHIP/src
 	Parameter SIZE_WIDTH bound to: 4 - type: integer 
 	Parameter LEN_WIDTH bound to: 8 - type: integer 
 	Parameter RESPONSE_WIDTH bound to: 3 - type: integer 
-	Parameter R_DEPTH bound to: 1024 - type: integer 
+	Parameter R_DEPTH bound to: 32 - type: integer 
 	Parameter R_DATA_FIFO_WIDTH bound to: 71 - type: integer 
 	Parameter IDEL bound to: 2'b00 
 	Parameter READ bound to: 2'b01 
@@ -141,10 +150,10 @@ INFO: [Synth 8-6157] synthesizing module 'R_FIFO' [C:/Users/demon/INTERNSHIP/src
 	Parameter SEND bound to: 2'b11 
 INFO: [Synth 8-6157] synthesizing module 'FIFO__parameterized1' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/FIFO.v:23]
 	Parameter DATA_WIDTH bound to: 71 - type: integer 
-	Parameter DEPTH bound to: 1024 - type: integer 
-	Parameter COUNTER_WIDTH bound to: 10 - type: integer 
+	Parameter DEPTH bound to: 32 - type: integer 
+	Parameter COUNTER_WIDTH bound to: 5 - type: integer 
 	Parameter BYTES bound to: 8 - type: integer 
-	Parameter BYTE_POINTER_WIDTH bound to: 13 - type: integer 
+	Parameter BYTE_POINTER_WIDTH bound to: 8 - type: integer 
 	Parameter IDEL bound to: 2'b00 
 	Parameter WRITE bound to: 2'b01 
 	Parameter READ bound to: 2'b10 
@@ -153,10 +162,74 @@ INFO: [Synth 8-6155] done synthesizing module 'FIFO__parameterized1' (6#1) [C:/U
 WARNING: [Synth 8-6014] Unused sequential element r_fifo_rd_en_reg was removed.  [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/R_FIFO.v:64]
 INFO: [Synth 8-6155] done synthesizing module 'R_FIFO' (7#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/R_FIFO.v:1]
 INFO: [Synth 8-6155] done synthesizing module 'READ_BUFFER' (8#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/READ_BUFFER.v:23]
-WARNING: [Synth 8-3848] Net bvalid in module/entity AXI_TOP_WRAPPER does not have driver. [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:65]
-WARNING: [Synth 8-3848] Net bresp in module/entity AXI_TOP_WRAPPER does not have driver. [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:66]
-WARNING: [Synth 8-3848] Net bid in module/entity AXI_TOP_WRAPPER does not have driver. [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:67]
-INFO: [Synth 8-6155] done synthesizing module 'AXI_TOP_WRAPPER' (9#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:1]
+INFO: [Synth 8-6157] synthesizing module 'WRITE_BUFFER_CONTROLLER' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER_CONTROLLER.v:23]
+	Parameter ADDR_WIDTH bound to: 32 - type: integer 
+	Parameter DATA_WIDTH bound to: 64 - type: integer 
+	Parameter ID_WIDTH bound to: 4 - type: integer 
+	Parameter SIZE_WIDTH bound to: 4 - type: integer 
+	Parameter LEN_WIDTH bound to: 8 - type: integer 
+	Parameter RESPONSE_WIDTH bound to: 3 - type: integer 
+	Parameter AR_DEPTH bound to: 32 - type: integer 
+	Parameter W_DEPTH bound to: 32 - type: integer 
+	Parameter AW_DEPTH bound to: 32 - type: integer 
+	Parameter R_DEPTH bound to: 32 - type: integer 
+	Parameter ADDR_OFFSET bound to: 16'b1110000000000000 
+	Parameter CONTL_REG_WIDTH bound to: 32 - type: integer 
+	Parameter STATUS_REG_WIDTH bound to: 32 - type: integer 
+	Parameter UART_TX_FIFO_DEPTH bound to: 32 - type: integer 
+	Parameter UART_RX_FIFO_DEPTH bound to: 32 - type: integer 
+	Parameter BASE_ADDRESS bound to: 16'b1110000100000000 
+	Parameter START_OFFSET bound to: 16'b0000000000000000 
+	Parameter END_OFFSET bound to: 16'b0000100000010000 
+	Parameter OFFSET_START_BITS bound to: 16 - type: integer 
+	Parameter DATA_BYTES bound to: 8 - type: integer 
+	Parameter BYTES_WIDTH bound to: 3 - type: integer 
+	Parameter ALIGN_BITS bound to: 2 - type: integer 
+	Parameter AW_FIFO_WIDTH bound to: 50 - type: integer 
+	Parameter STATUS_REG_ADDR bound to: 4 - type: integer 
+	Parameter CTRL_REG_ADDR bound to: 8 - type: integer 
+	Parameter INTRPT_REG_ADDR bound to: 12 - type: integer 
+	Parameter TX_ADDRESS_OFFSET_START bound to: 16 - type: integer 
+	Parameter TX_ADDRESS_OFFSET_END bound to: 272 - type: integer 
+	Parameter TOTAL_BYTES bound to: 523 - type: integer 
+	Parameter IDEL bound to: 2'b00 
+	Parameter READ_TX_DATA bound to: 2'b01 
+	Parameter DECODE bound to: 2'b10 
+	Parameter SEND_DATA bound to: 2'b11 
+	Parameter STS bound to: 2'b01 
+	Parameter CRTL bound to: 2'b10 
+	Parameter INTRT bound to: 2'b11 
+	Parameter SLVERR bound to: 3'b010 
+	Parameter DECERR bound to: 3'b011 
+	Parameter OKAY bound to: 0 - type: integer 
+WARNING: [Synth 8-3848] Net tx_data_valid in module/entity WRITE_BUFFER_CONTROLLER does not have driver. [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER_CONTROLLER.v:65]
+INFO: [Synth 8-6155] done synthesizing module 'WRITE_BUFFER_CONTROLLER' (9#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER_CONTROLLER.v:23]
+WARNING: [Synth 8-6104] Input port 'tx_data' has an internal driver [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:327]
+WARNING: [Synth 8-6104] Input port 'addr' has an internal driver [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:329]
+WARNING: [Synth 8-3848] Net tx_fifo_mem_left in module/entity AXI_TOP_WRAPPER does not have driver. [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:65]
+WARNING: [Synth 8-3848] Net tx_ready in module/entity AXI_TOP_WRAPPER does not have driver. [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:66]
+WARNING: [Synth 8-3848] Net out_data_ready in module/entity AXI_TOP_WRAPPER does not have driver. [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:319]
+INFO: [Synth 8-6155] done synthesizing module 'AXI_TOP_WRAPPER' (10#1) [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:1]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_data_valid
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_addr[49]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_addr[48]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[71]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[70]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[69]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[68]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[67]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[66]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[65]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[64]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[7]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[6]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[5]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[4]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[3]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[2]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[1]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[0]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_ready
 WARNING: [Synth 8-3331] design W_FIFO has unconnected port wlast
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bresp[2]
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bresp[1]
@@ -166,17 +239,17 @@ WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bid[2]
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bid[1]
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bid[0]
 ---------------------------------------------------------------------------------
-Finished Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 777.793 ; gain = 296.211
+Finished Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 777.914 ; gain = 296.723
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 777.793 ; gain = 296.211
+Finished Constraint Validation : Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 777.914 ; gain = 296.723
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z045ffg900-2
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 777.793 ; gain = 296.211
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 777.914 ; gain = 296.723
 ---------------------------------------------------------------------------------
 INFO: [Device 21-403] Loading part xc7z045ffg900-2
 INFO: [Synth 8-802] inferred FSM for state register 'r_state_reg' in module 'AXI_MASTER'
@@ -188,6 +261,7 @@ INFO: [Synth 8-802] inferred FSM for state register 'rd_state_reg' in module 'FI
 INFO: [Synth 8-802] inferred FSM for state register 'rd_state_reg' in module 'FIFO__parameterized0'
 INFO: [Synth 8-802] inferred FSM for state register 'rd_state_reg' in module 'FIFO__parameterized1'
 INFO: [Synth 8-802] inferred FSM for state register 'r_fifo_state_reg' in module 'R_FIFO'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'WRITE_BUFFER_CONTROLLER'
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
 ---------------------------------------------------------------------------------------------------
@@ -253,8 +327,17 @@ INFO: [Synth 8-3354] encoded FSM with state register 'rd_state_reg' using encodi
                     SEND |                             1000 |                               11
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'r_fifo_state_reg' using encoding 'one-hot' in module 'R_FIFO'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    IDEL |                               00 |                               00
+            READ_TX_DATA |                               01 |                               01
+                  DECODE |                               10 |                               10
+               SEND_DATA |                               11 |                               11
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'WRITE_BUFFER_CONTROLLER'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 777.793 ; gain = 296.211
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 777.914 ; gain = 296.723
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -268,36 +351,38 @@ Start RTL Component Statistics
 ---------------------------------------------------------------------------------
 Detailed RTL Component Info : 
 +---Adders : 
-	   2 Input     12 Bit       Adders := 2     
-	   2 Input     11 Bit       Adders := 4     
+	   2 Input     16 Bit       Adders := 1     
 	   2 Input      8 Bit       Adders := 1     
-	   2 Input      7 Bit       Adders := 2     
-	   2 Input      6 Bit       Adders := 4     
+	   2 Input      7 Bit       Adders := 4     
+	   2 Input      6 Bit       Adders := 8     
+	   2 Input      4 Bit       Adders := 1     
 +---Registers : 
 	               72 Bit    Registers := 1     
 	               71 Bit    Registers := 3     
-	               64 Bit    Registers := 1     
+	               64 Bit    Registers := 2     
 	               50 Bit    Registers := 2     
-	               11 Bit    Registers := 2     
+	               16 Bit    Registers := 2     
 	                8 Bit    Registers := 2     
-	                6 Bit    Registers := 2     
-	                4 Bit    Registers := 1     
-	                3 Bit    Registers := 1     
+	                6 Bit    Registers := 4     
+	                4 Bit    Registers := 3     
+	                3 Bit    Registers := 2     
 	                2 Bit    Registers := 4     
+	                1 Bit    Registers := 1     
 +---RAMs : 
-	              72K Bit         RAMs := 1     
-	              71K Bit         RAMs := 1     
+	               2K Bit         RAMs := 2     
 	               1K Bit         RAMs := 2     
 +---Muxes : 
 	   2 Input     64 Bit        Muxes := 2     
 	   2 Input     32 Bit        Muxes := 2     
+	   4 Input     16 Bit        Muxes := 1     
 	   2 Input      8 Bit        Muxes := 4     
 	   2 Input      4 Bit        Muxes := 6     
 	   4 Input      4 Bit        Muxes := 1     
 	   2 Input      3 Bit        Muxes := 1     
-	   2 Input      2 Bit        Muxes := 10    
-	   2 Input      1 Bit        Muxes := 53    
-	   4 Input      1 Bit        Muxes := 3     
+	   2 Input      2 Bit        Muxes := 11    
+	   4 Input      2 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 55    
+	   4 Input      1 Bit        Muxes := 9     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -336,28 +421,28 @@ Detailed RTL Component Info :
 Module FIFO__parameterized0 
 Detailed RTL Component Info : 
 +---Adders : 
-	   2 Input     12 Bit       Adders := 1     
-	   2 Input     11 Bit       Adders := 2     
+	   2 Input      7 Bit       Adders := 1     
+	   2 Input      6 Bit       Adders := 2     
 +---Registers : 
 	               72 Bit    Registers := 1     
-	               11 Bit    Registers := 1     
+	                6 Bit    Registers := 1     
 	                2 Bit    Registers := 1     
 +---RAMs : 
-	              72K Bit         RAMs := 1     
+	               2K Bit         RAMs := 1     
 +---Muxes : 
 	   2 Input      2 Bit        Muxes := 2     
 	   2 Input      1 Bit        Muxes := 10    
 Module FIFO__parameterized1 
 Detailed RTL Component Info : 
 +---Adders : 
-	   2 Input     12 Bit       Adders := 1     
-	   2 Input     11 Bit       Adders := 2     
+	   2 Input      7 Bit       Adders := 1     
+	   2 Input      6 Bit       Adders := 2     
 +---Registers : 
 	               71 Bit    Registers := 1     
-	               11 Bit    Registers := 1     
+	                6 Bit    Registers := 1     
 	                2 Bit    Registers := 1     
 +---RAMs : 
-	              71K Bit         RAMs := 1     
+	               2K Bit         RAMs := 1     
 +---Muxes : 
 	   2 Input      2 Bit        Muxes := 2     
 	   2 Input      1 Bit        Muxes := 10    
@@ -372,6 +457,23 @@ Detailed RTL Component Info :
 	   4 Input      4 Bit        Muxes := 1     
 	   2 Input      4 Bit        Muxes := 1     
 	   4 Input      1 Bit        Muxes := 3     
+Module WRITE_BUFFER_CONTROLLER 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     16 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
++---Registers : 
+	               64 Bit    Registers := 1     
+	               16 Bit    Registers := 2     
+	                4 Bit    Registers := 2     
+	                3 Bit    Registers := 1     
+	                1 Bit    Registers := 1     
++---Muxes : 
+	   4 Input     16 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 2     
+	   4 Input      1 Bit        Muxes := 6     
 ---------------------------------------------------------------------------------
 Finished RTL Hierarchical Component Statistics
 ---------------------------------------------------------------------------------
@@ -389,6 +491,26 @@ No constraint files found.
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 Warning: Parallel synthesis criteria is not met 
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_data_valid
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_addr[49]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_addr[48]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[71]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[70]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[69]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[68]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[67]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[66]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[65]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port out_wdata[64]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[7]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[6]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[5]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[4]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[3]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[2]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[1]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_fifo_mem_left[0]
+WARNING: [Synth 8-3331] design WRITE_BUFFER_CONTROLLER has unconnected port tx_ready
 WARNING: [Synth 8-3331] design W_FIFO has unconnected port wlast
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bresp[2]
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bresp[1]
@@ -397,15 +519,26 @@ WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bid[3]
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bid[2]
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bid[1]
 WARNING: [Synth 8-3331] design AXI_MASTER has unconnected port bid[0]
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (write_buffer_controller_inst/beat_count0_inferred/\beat_count_reg[1] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (write_buffer_controller_inst/beat_count0_inferred/\beat_count_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/FSM_sequential_rd_state_reg)
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/\wr_pointer_reg[5] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (write_buffer_controller_inst/beat_count0_inferred/\beat_count_reg[2] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (write_buffer_controller_inst/beat_count0_inferred/\beat_count_reg[3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer1_inferred/\rd_pointer_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer1_inferred/\rd_pointer_reg[1] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer1_inferred/\rd_pointer_reg[2] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer1_inferred/\rd_pointer_reg[3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer1_inferred/\rd_pointer_reg[4] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/\wr_state_reg[1] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/\wr_pointer_reg[10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/\wr_pointer_reg[5] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/\wr_state_reg[1] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/\wr_pointer_reg[10] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (FIFO:/\wr_pointer_reg[5] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (FIFO:/\wr_state_reg[1] )
 WARNING: [Synth 8-3332] Sequential element (FSM_sequential_b_state_reg) is unused and will be removed from module AXI_MASTER.
+WARNING: [Synth 8-3332] Sequential element (FSM_sequential_rd_state_reg) is unused and will be removed from module FIFO__parameterized0.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 1038.535 ; gain = 556.953
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 1038.480 ; gain = 557.289
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -416,9 +549,8 @@ Block RAM: Preliminary Mapping	Report (see note below)
 |Module Name                              | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
 +-----------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 |FIFO:                                    | mem_reg    | 32 x 50(NO_CHANGE)     | W |   | 32 x 50(WRITE_FIRST)   |   | R | Port A and B     | 0      | 1      | 
-|WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST  | mem_reg    | 1 K x 72(NO_CHANGE)    | W |   | 1 K x 72(WRITE_FIRST)  |   | R | Port A and B     | 0      | 2      | 
 |FIFO:                                    | mem_reg    | 32 x 50(NO_CHANGE)     | W |   | 32 x 50(WRITE_FIRST)   |   | R | Port A and B     | 0      | 1      | 
-|INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST | mem_reg    | 1 K x 71(NO_CHANGE)    | W |   | 1 K x 71(WRITE_FIRST)  |   | R | Port A and B     | 0      | 2      | 
+|INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST | mem_reg    | 32 x 71(NO_CHANGE)     | W |   | 32 x 71(WRITE_FIRST)   |   | R | Port A and B     | 0      | 1      | 
 +-----------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 
 Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
@@ -436,7 +568,7 @@ No constraint files found.
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 1044.297 ; gain = 562.715
+Finished Timing Optimization : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 1043.641 ; gain = 562.449
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -447,9 +579,8 @@ Block RAM: Final Mapping	Report
 |Module Name                              | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
 +-----------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 |FIFO:                                    | mem_reg    | 32 x 50(NO_CHANGE)     | W |   | 32 x 50(WRITE_FIRST)   |   | R | Port A and B     | 0      | 1      | 
-|WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST  | mem_reg    | 1 K x 72(NO_CHANGE)    | W |   | 1 K x 72(WRITE_FIRST)  |   | R | Port A and B     | 0      | 2      | 
 |FIFO:                                    | mem_reg    | 32 x 50(NO_CHANGE)     | W |   | 32 x 50(WRITE_FIRST)   |   | R | Port A and B     | 0      | 1      | 
-|INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST | mem_reg    | 1 K x 71(NO_CHANGE)    | W |   | 1 K x 71(WRITE_FIRST)  |   | R | Port A and B     | 0      | 2      | 
+|INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST | mem_reg    | 32 x 71(NO_CHANGE)     | W |   | 32 x 71(WRITE_FIRST)   |   | R | Port A and B     | 0      | 1      | 
 +-----------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 
 ---------------------------------------------------------------------------------
@@ -464,44 +595,26 @@ Report RTL Partitions:
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[0]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[0]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[1]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[1]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[2]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[2]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[3]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[3]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[4]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[4]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[5]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[5]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[6]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[6]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[7]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[7]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[8]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[8]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[9]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[9]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[0]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[0]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[1]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[1]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[2]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[2]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[3]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[3]'
-INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[4]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[4]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[0]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[0]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[1]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[1]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[2]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[2]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[3]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[3]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[4]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[4]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[5]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[5]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[6]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[6]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[7]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[7]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[8]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[8]'
-INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg_rep[9]' (FDRE) to 'WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/rd_pointer_reg[9]'
 INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg_rep[0]' (FDRE) to 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg[0]'
 INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg_rep[1]' (FDRE) to 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg[1]'
 INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg_rep[2]' (FDRE) to 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg[2]'
 INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg_rep[3]' (FDRE) to 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg[3]'
 INFO: [Synth 8-3886] merging instance 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg_rep[4]' (FDRE) to 'WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/rd_pointer_reg[4]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[0]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[0]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[1]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[1]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[2]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[2]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[3]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[3]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg_rep[4]' (FDRE) to 'INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/rd_pointer_reg[4]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[0]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[0]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[1]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[1]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[2]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[2]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[3]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[3]'
+INFO: [Synth 8-3886] merging instance 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg_rep[4]' (FDRE) to 'INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/rd_pointer_reg[4]'
 INFO: [Synth 8-7053] The timing for the instance WRT_BUFFER_INST/AW_FIFO_INST/AWFIFO/mem_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7053] The timing for the instance WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/mem_reg_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7053] The timing for the instance WRT_BUFFER_INST/W_FIFO_INST/W_FIFO_INST/mem_reg_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 INFO: [Synth 8-7053] The timing for the instance INST_READ_BUFFER/AR_FIFO_INST_READ_BUFFER/ARFIFO/mem_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7053] The timing for the instance INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/mem_reg_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7053] The timing for the instance INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/mem_reg_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7053] The timing for the instance INST_READ_BUFFER/r_fifo_inst/R_FIFO_INST/mem_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 1044.480 ; gain = 562.898
+Finished Technology Mapping : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 1043.852 ; gain = 562.660
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -519,13 +632,13 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:09 ; elapsed = 00:00:13 . Memory (MB): peak = 1044.480 ; gain = 562.898
+Finished IO Insertion : Time (s): cpu = 00:00:09 ; elapsed = 00:00:12 . Memory (MB): peak = 1043.852 ; gain = 562.660
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:09 ; elapsed = 00:00:13 . Memory (MB): peak = 1044.480 ; gain = 562.898
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:09 ; elapsed = 00:00:12 . Memory (MB): peak = 1043.852 ; gain = 562.660
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -544,7 +657,7 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:09 ; elapsed = 00:00:13 . Memory (MB): peak = 1045.309 ; gain = 563.727
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:09 ; elapsed = 00:00:12 . Memory (MB): peak = 1043.852 ; gain = 562.660
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -561,60 +674,62 @@ Report Cell Usage:
 |      |Cell     |Count |
 +------+---------+------+
 |1     |BUFG     |     2|
-|2     |CARRY4   |    10|
-|3     |LUT1     |    14|
-|4     |LUT2     |   226|
-|5     |LUT3     |    30|
-|6     |LUT4     |    23|
-|7     |LUT5     |    27|
-|8     |LUT6     |    67|
-|9     |RAMB36E1 |     6|
-|10    |FDRE     |   301|
+|2     |CARRY4   |     7|
+|3     |LUT1     |    17|
+|4     |LUT2     |   186|
+|5     |LUT3     |    17|
+|6     |LUT4     |    18|
+|7     |LUT5     |    29|
+|8     |LUT6     |    51|
+|9     |RAMB36E1 |     3|
+|10    |FDRE     |   277|
 |11    |FDSE     |     4|
-|12    |IBUF     |   134|
-|13    |OBUF     |   254|
+|12    |IBUF     |   124|
+|13    |OBUF     |   128|
+|14    |OBUFT    |    10|
 +------+---------+------+
 
 Report Instance Areas: 
-+------+-----------------------------+---------------------+------+
-|      |Instance                     |Module               |Cells |
-+------+-----------------------------+---------------------+------+
-|1     |top                          |                     |  1098|
-|2     |  master_inst                |AXI_MASTER           |   247|
-|3     |  WRT_BUFFER_INST            |WRITE_BUFFER         |   104|
-|4     |    AW_FIFO_INST             |AW_FIFO              |    38|
-|5     |      AWFIFO                 |FIFO__1              |    38|
-|6     |    W_FIFO_INST              |W_FIFO               |    66|
-|7     |      W_FIFO_INST            |FIFO__parameterized0 |    66|
-|8     |  INST_READ_BUFFER           |READ_BUFFER          |   357|
-|9     |    AR_FIFO_INST_READ_BUFFER |AR_FIFO              |    38|
-|10    |      ARFIFO                 |FIFO                 |    38|
-|11    |    r_fifo_inst              |R_FIFO               |   319|
-|12    |      R_FIFO_INST            |FIFO__parameterized1 |    67|
-+------+-----------------------------+---------------------+------+
++------+-------------------------------+------------------------+------+
+|      |Instance                       |Module                  |Cells |
++------+-------------------------------+------------------------+------+
+|1     |top                            |                        |   873|
+|2     |  master_inst                  |AXI_MASTER              |   207|
+|3     |  WRT_BUFFER_INST              |WRITE_BUFFER            |    55|
+|4     |    AW_FIFO_INST               |AW_FIFO                 |    39|
+|5     |      AWFIFO                   |FIFO__1                 |    39|
+|6     |    W_FIFO_INST                |W_FIFO                  |    16|
+|7     |      W_FIFO_INST              |FIFO__parameterized0    |    16|
+|8     |  INST_READ_BUFFER             |READ_BUFFER             |   330|
+|9     |    AR_FIFO_INST_READ_BUFFER   |AR_FIFO                 |    39|
+|10    |      ARFIFO                   |FIFO                    |    39|
+|11    |    r_fifo_inst                |R_FIFO                  |   291|
+|12    |      R_FIFO_INST              |FIFO__parameterized1    |    39|
+|13    |  write_buffer_controller_inst |WRITE_BUFFER_CONTROLLER |    17|
++------+-------------------------------+------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:09 ; elapsed = 00:00:13 . Memory (MB): peak = 1045.309 ; gain = 563.727
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:09 ; elapsed = 00:00:12 . Memory (MB): peak = 1043.852 ; gain = 562.660
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 28 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:09 ; elapsed = 00:00:13 . Memory (MB): peak = 1045.309 ; gain = 563.727
-Synthesis Optimization Complete : Time (s): cpu = 00:00:09 ; elapsed = 00:00:13 . Memory (MB): peak = 1045.309 ; gain = 563.727
+Synthesis finished with 0 errors, 0 critical warnings and 73 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:09 ; elapsed = 00:00:12 . Memory (MB): peak = 1043.852 ; gain = 562.660
+Synthesis Optimization Complete : Time (s): cpu = 00:00:09 ; elapsed = 00:00:12 . Memory (MB): peak = 1043.852 ; gain = 562.660
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.020 . Memory (MB): peak = 1057.355 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 16 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.018 . Memory (MB): peak = 1055.723 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 10 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1166.637 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1167.301 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
 INFO: [Common 17-83] Releasing license: Synthesis
-103 Infos, 28 Warnings, 0 Critical Warnings and 0 Errors encountered.
+98 Infos, 73 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:11 ; elapsed = 00:00:17 . Memory (MB): peak = 1166.637 ; gain = 692.605
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1166.637 ; gain = 0.000
+synth_design: Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1167.301 ; gain = 693.445
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1167.301 ; gain = 0.000
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
 INFO: [Common 17-1381] The checkpoint 'C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.runs/synth_2/AXI_TOP_WRAPPER.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file AXI_TOP_WRAPPER_utilization_synth.rpt -pb AXI_TOP_WRAPPER_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Thu May 22 10:49:40 2025...
+INFO: [Common 17-206] Exiting Vivado at Wed May 28 13:51:39 2025...

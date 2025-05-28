@@ -33,6 +33,7 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
     input [LEN_WIDTH-1:0] in_len,
     input [1:0] burst_type,
     input [(DATA_WIDTH/8)-1:0] in_strb,
+    input [DATA_WIDTH-1:0] in_data,
     //AXI DEFAULT PORTS
     input aclk,
     input areset,
@@ -106,7 +107,7 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
     //-----------W CHANNEL PORT ASSIGNMENTS BEGIN------------------------\\
      assign wvalid = (w_state==START);
      assign wlast  = ((w_state==START) && wvalid && beat_counter == r_awlen)?1:0;
-     assign wdata  = ((w_state==START) && wvalid) ? {in_addr,in_addr} : 0;
+     assign wdata  = ((w_state==START) && wvalid) ? in_data : 0;
      assign wstrb  = ((w_state==START) && wvalid) ? in_strb : 0;
      //-----------W CHANNEL PORT ASSIGNMENTS END ------------------------ \\
      //-------------------------------------------------------------------\\
