@@ -39,7 +39,6 @@ read_verilog -library xil_defaultlib {
   C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/READ_BUFFER.v
   C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/R_FIFO.v
   C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER.v
-  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER_CONTROLLER.v
   C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/W_FIFO.v
   C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v
 }

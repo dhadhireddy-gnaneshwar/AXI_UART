@@ -4,9 +4,7 @@ Running: C:/Xilinx/Vivado/2019.2/bin/unwrapped/win64.o/xelab.exe -wto 2e702ec8cc
 Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-3091] actual bit length 1 differs from formal bit length 72 for port 'out_wdata' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:242]
-WARNING: [VRFC 10-3091] actual bit length 1 differs from formal bit length 72 for port 'out_wdata' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:324]
-WARNING: [VRFC 10-5021] port 'ar_addr_read' is not connected on this instance [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_TOP_TEST.v:67]
+WARNING: [VRFC 10-5021] port 'read_wdata' is not connected on this instance [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_TOP_TEST.v:66]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis
@@ -14,14 +12,13 @@ Time Resolution for simulation is 1ps
 Compiling module xil_defaultlib.AXI_MASTER
 Compiling module xil_defaultlib.FIFO(DATA_WIDTH=50)
 Compiling module xil_defaultlib.AW_FIFO_default
-Compiling module xil_defaultlib.FIFO(DATA_WIDTH=72)
-Compiling module xil_defaultlib.W_FIFO_default
-Compiling module xil_defaultlib.WRITE_BUFFER
+Compiling module xil_defaultlib.FIFO(DATA_WIDTH=72,DEPTH=1024)
+Compiling module xil_defaultlib.W_FIFO(W_DEPTH=1024)
+Compiling module xil_defaultlib.WRITE_BUFFER(W_DEPTH=1024)
 Compiling module xil_defaultlib.AR_FIFO_default
-Compiling module xil_defaultlib.FIFO(DATA_WIDTH=71)
-Compiling module xil_defaultlib.R_FIFO_default
-Compiling module xil_defaultlib.READ_BUFFER
-Compiling module xil_defaultlib.WRITE_BUFFER_CONTROLLER(W_DEPTH=...
+Compiling module xil_defaultlib.FIFO(DATA_WIDTH=71,DEPTH=1024)
+Compiling module xil_defaultlib.R_FIFO(R_DEPTH=1024)
+Compiling module xil_defaultlib.READ_BUFFER(R_DEPTH=1024)
 Compiling module xil_defaultlib.AXI_TOP_WRAPPER
 Compiling module xil_defaultlib.AXI_TOP_TEST
 Compiling module xil_defaultlib.glbl
