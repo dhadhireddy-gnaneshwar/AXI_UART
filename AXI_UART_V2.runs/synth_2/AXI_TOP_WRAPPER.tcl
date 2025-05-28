@@ -31,7 +31,17 @@ set_property ip_repo_paths c:/Users/demon/INTERNSHIP/src_sim_vivado/ip_repo/test
 update_ip_catalog
 set_property ip_output_repo c:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
-read_verilog -library xil_defaultlib C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER_CONTROLLER.v
+read_verilog -library xil_defaultlib {
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AR_FIFO.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AW_FIFO.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/FIFO.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/READ_BUFFER.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/R_FIFO.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/WRITE_BUFFER.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/W_FIFO.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v
+}
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
 # design are intentionally left as such for best results. Dcp files will be
@@ -43,12 +53,12 @@ foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]
 
-synth_design -top WRITE_BUFFER_CONTROLLER -part xc7z045ffg900-2 -flatten_hierarchy none
+synth_design -top AXI_TOP_WRAPPER -part xc7z045ffg900-2 -flatten_hierarchy none
 
 
 # disable binary constraint mode for synth run checkpoints
 set_param constraints.enableBinaryConstraints false
-write_checkpoint -force -noxdef WRITE_BUFFER_CONTROLLER.dcp
-create_report "synth_2_synth_report_utilization_0" "report_utilization -file WRITE_BUFFER_CONTROLLER_utilization_synth.rpt -pb WRITE_BUFFER_CONTROLLER_utilization_synth.pb"
+write_checkpoint -force -noxdef AXI_TOP_WRAPPER.dcp
+create_report "synth_2_synth_report_utilization_0" "report_utilization -file AXI_TOP_WRAPPER_utilization_synth.rpt -pb AXI_TOP_WRAPPER_utilization_synth.pb"
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]

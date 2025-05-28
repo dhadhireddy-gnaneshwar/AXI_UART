@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_2" LaunchPart="xc7z045ffg900-2" LaunchTime="1748347599">
-  <File Type="PA-TCL" Name="WRITE_BUFFER_CONTROLLER.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="WRITE_BUFFER_CONTROLLER_drc_synth.rpt"/>
-  <File Type="REPORTS-TCL" Name="WRITE_BUFFER_CONTROLLER_reports.tcl"/>
-  <File Type="RDS-RDS" Name="WRITE_BUFFER_CONTROLLER.vds"/>
-  <File Type="RDS-UTIL" Name="WRITE_BUFFER_CONTROLLER_utilization_synth.rpt"/>
-  <File Type="RDS-UTIL-PB" Name="WRITE_BUFFER_CONTROLLER_utilization_synth.pb"/>
-  <File Type="RDS-DCP" Name="WRITE_BUFFER_CONTROLLER.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="WRITE_BUFFER_CONTROLLER_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="WRITE_BUFFER_CONTROLLER_timing_summary_synth.pb"/>
+<GenRun Id="synth_2" LaunchPart="xc7z045ffg900-2" LaunchTime="1747891144">
+  <File Type="PA-TCL" Name="AXI_TOP_WRAPPER.tcl"/>
+  <File Type="REPORTS-TCL" Name="AXI_TOP_WRAPPER_reports.tcl"/>
+  <File Type="RDS-RDS" Name="AXI_TOP_WRAPPER.vds"/>
+  <File Type="RDS-UTIL" Name="AXI_TOP_WRAPPER_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="AXI_TOP_WRAPPER_utilization_synth.pb"/>
+  <File Type="RDS-DCP" Name="AXI_TOP_WRAPPER.dcp"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
-    <File Path="$PSRCDIR/sources_1/new/WRITE_BUFFER_CONTROLLER.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PSRCDIR/sources_1/new/AR_FIFO.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -28,7 +17,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/AW_FIFO.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -36,7 +24,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/AXI_MASTER.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -44,7 +31,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/FIFO.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -52,7 +38,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/READ_BUFFER.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -60,7 +45,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/R_FIFO.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -68,7 +52,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/WRITE_BUFFER.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -76,7 +59,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/W_FIFO.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -84,7 +66,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/AXI_MASTER_WRAPPER.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -98,23 +79,7 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/UART_CONTROLLER.v">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/READ_BUFFER_CONTROLLER.v">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/FIFO_UART.v">
+    <File Path="$PSRCDIR/sources_1/new/WRITE_BUFFER_CONTROLLER.v">
       <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -124,7 +89,8 @@
     </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="WRITE_BUFFER_CONTROLLER"/>
+      <Option Name="TopModule" Val="AXI_TOP_WRAPPER"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
   <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">

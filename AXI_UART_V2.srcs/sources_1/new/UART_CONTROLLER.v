@@ -37,7 +37,7 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
      parameter UART_RX_FIFO_DEPTH = 32,
      parameter CTRL_REG_WIDTH = 32)(
 
-    input  data
+    input [7:0] tx_data
 
     );
 endmodule
