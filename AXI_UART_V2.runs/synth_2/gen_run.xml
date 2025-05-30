@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_2" LaunchPart="xc7z045ffg900-2" LaunchTime="1748524832">
+<GenRun Id="synth_2" LaunchPart="xc7z045ffg900-2" LaunchTime="1747891144">
   <File Type="PA-TCL" Name="AXI_TOP_WRAPPER.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="AXI_TOP_WRAPPER_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="AXI_TOP_WRAPPER_reports.tcl"/>
   <File Type="RDS-RDS" Name="AXI_TOP_WRAPPER.vds"/>
   <File Type="RDS-UTIL" Name="AXI_TOP_WRAPPER_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="AXI_TOP_WRAPPER_utilization_synth.pb"/>
   <File Type="RDS-DCP" Name="AXI_TOP_WRAPPER.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="AXI_TOP_WRAPPER_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="AXI_TOP_WRAPPER_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/AR_FIFO.v">
@@ -60,13 +57,6 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/WRITE_BUFFER_CONTROLLER.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PSRCDIR/sources_1/new/W_FIFO.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -89,23 +79,7 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/UART_CONTROLLER.v">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/READ_BUFFER_CONTROLLER.v">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/UART_FIFO.v">
+    <File Path="$PSRCDIR/sources_1/new/WRITE_BUFFER_CONTROLLER.v">
       <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
