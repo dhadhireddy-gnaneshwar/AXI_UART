@@ -81,7 +81,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     localparam TX_ADDRESS_OFFSET_END = TX_ADDRESS_OFFSET_START + (DATA_BYTES * UART_TX_FIFO_DEPTH);
     localparam TOTAL_BYTES = ((DATA_BYTES)*(UART_RX_FIFO_DEPTH+UART_TX_FIFO_DEPTH))+(3*4)-1;
     //======================== STATE DECLARATION ===================================================\\
-    localparam IDEL = 2'b00, READ_TX_DATA =2'b01, DECODE = 2'b10, SEND_DATA = 2'B11 , STS =2'b01, CRTL = 2'b10, INTRT = 2'b11;
+    localparam IDEL = 3'b000, READ_TX_DATA =3'b001, DECODE = 3'b010, SEND_DATA = 3'B011,NEW_DATA = 3'b100 , STS =2'b01, CRTL = 2'b10, INTRT = 2'b11;
     
     localparam SLVERR = 3'b010, DECERR = 3'b011,OKAY = 000;
 
@@ -130,7 +130,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     
     //WRITE CONTROLLER PORT LOGIC
     assign addr_read = (state==READ_TX_DATA)?1:0;
-    assign read_wdata = (state == SEND_DATA);
+    assign read_wdata  = (state == SEND_DATA);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                                                                                           //
     //                                                                                                                                           //
@@ -208,7 +208,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                         if(read_wdata && out_data_ready)
                                             begin
                                                 r_addr <=r_addr + (1<<awsize);
-                                                beat_count <= beat_count+1;
+                                                state <= NEW_DATA;
                                             end
                                     end
                                 else
@@ -223,6 +223,11 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                             end
                                         
                                     end
+                            end
+                        NEW_DATA:
+                            begin
+                                beat_count <= beat_count+1;
+                                state <= SEND_DATA;
                             end
                     endcase
                 end

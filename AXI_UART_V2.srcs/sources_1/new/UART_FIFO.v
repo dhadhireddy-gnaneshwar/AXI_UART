@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module FIFO #(parameter DATA_WIDTH=32,
+module UART_FIFO #(parameter DATA_WIDTH=32,
               parameter DEPTH=32 )
     (
         input rst,
@@ -36,6 +36,7 @@ module FIFO #(parameter DATA_WIDTH=32,
         output rd_ready,
 //======FLAG PORT DECLARATION =====\\
         output full,
+        output [$clog2(DEPTH):0] used_entries,
         output empty          
 
     );
@@ -49,13 +50,15 @@ module FIFO #(parameter DATA_WIDTH=32,
     reg [DATA_WIDTH-1 : 0] mem [0 : DEPTH-1];
     reg [1:0] wr_state,rd_state;
     reg [COUNTER_WIDTH :0] wr_pointer, rd_pointer;
-    reg [DATA_WIDTH-1 : 0] sync_1;
+    reg [DATA_WIDTH-1 : 0] sync_1,sync_2;
     
-    assign wr_ready = (!(wr_state==IDEL));
-    assign rd_ready = (!(rd_state==IDEL));
+    assign wr_ready = ~(!(wr_state==IDEL));
+    assign rd_ready = ~(!(rd_state==IDEL));
     assign full =  rst?0:((wr_pointer + 1) % DEPTH) == rd_pointer;
     assign empty = (wr_pointer == rd_pointer);
-    
+    assign used_entries = (wr_pointer >= rd_pointer) ? 
+                          (wr_pointer - rd_pointer) : 
+                          (DEPTH - rd_pointer + wr_pointer);
 //======= WRITE LOGIC DEFINATION =======\\  
     always@(posedge wr_clk)
             begin
@@ -72,14 +75,13 @@ module FIFO #(parameter DATA_WIDTH=32,
                                 if(wr_en)
                                     begin
                                         wr_state <= WRITE;
-                                        sync_1 <= wr_data;
                                     end
                             end
                         WRITE:
                             begin
                                 if(!full && wr_en )
                                     begin
-                                        mem[wr_pointer] <= sync_1;;
+                                        mem[wr_pointer] <= wr_data;
                                         wr_pointer <= (wr_pointer +1)%DEPTH;
                                         wr_state <= IDEL;
                                     end

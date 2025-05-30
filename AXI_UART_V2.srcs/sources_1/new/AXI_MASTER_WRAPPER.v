@@ -76,7 +76,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
 
     wire wvalid;
     wire wready;
-    wire [DATA_WIDTH-1:0] wdata;
+    wire [DATA_WIDTH-1:0] wdata,w_data,w_out_wdata;
     wire [(DATA_WIDTH/8)-1:0] wstrb;
     wire wlast;
 
@@ -102,7 +102,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     wire [ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+1:0] out_addr_o;
     wire out_data_ready;
     assign out_data_ready = read_wdata ;
-    assign wvalid_o = wvalid;
+    assign wvalid_o = wready;
 
 
     AXI_MASTER #(
@@ -132,7 +132,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
         .awvalid(awvalid),
         .wvalid(wvalid),
         .wready(wready),
-        .wdata(wdata),
+        .wdata(w_data),
         .wstrb(wstrb),
         .wlast(wlast),
         .bvalid(w_bvalid),
@@ -230,8 +230,8 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
                 .addr_read_ready(addr_read_ready) , 
                 // WRITE DATA W FIFO PORT
                 .wvalid(wvalid),
-                .wdata(wdata),
-                .wstrb(wstrb),
+                .in_wdata(w_data),
+                .in_wstrb(wstrb),
                 .wlast(wlast),
                 .wready(wready), 
                 // WRITE DATA READ DATA
@@ -239,7 +239,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
                 .out_wdata_ready(out_wdata_ready),
                 .w_full(w_full),
                 .w_empty(w_empty),
-                .out_wdata(out_wdata)
+                .out_wdata(w_out_wdata)
           );
           
       READ_BUFFER #(
@@ -318,10 +318,10 @@ WRITE_BUFFER_CONTROLLER #(
     .awempty(awempty),           
     .addr_read_ready(addr_read_ready), 
     .read_wdata(read_wdata),        
-    .out_data_ready(out_data_ready),   
+    .out_data_ready(out_wdata_ready),   
     .w_full(w_full),            
     .w_empty(w_empty),           
-    .out_wdata(out_wdata),        
+    .out_wdata(w_out_wdata),        
     .bvalid(w_bvalid),            
     .bresp(w_bresp),             
     .bid(w_bid),               

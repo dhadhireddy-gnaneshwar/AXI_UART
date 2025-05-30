@@ -14,9 +14,9 @@ INFO: [VRFC 10-2458] undeclared symbol read_wdata, assumed default net type wire
 INFO: [VRFC 10-2458] undeclared symbol out_wdata_ready, assumed default net type wire [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:239]
 INFO: [VRFC 10-2458] undeclared symbol w_full, assumed default net type wire [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:240]
 INFO: [VRFC 10-2458] undeclared symbol w_empty, assumed default net type wire [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:241]
-INFO: [VRFC 10-2458] undeclared symbol out_wdata, assumed default net type wire [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:242]
 INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/FIFO.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module FIFO
+WARNING: [VRFC 10-2096] empty statement in sequential block [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/FIFO.v:81]
 INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/READ_BUFFER.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module READ_BUFFER
 INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/R_FIFO.v" into library xil_defaultlib

@@ -63,8 +63,7 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     input rx_data_valid,
     output reg [OFFSET_START_BITS-1:0] addr,
     output rx_en,
-    input char_time_out,
-    input rx_trig
+    input char_time_out
     );
     
     //======================= DATA BYTE AND TOTAL ADDRESS WIDTH CALCULATION ========================\\    
@@ -133,6 +132,7 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     //READ CONTROLLER PORT LOGIC
     assign rlast = (read_beat_count == arlen || rresp != OKAY);
     assign wr_r_fifo_data  = {arid,rx_data,rresp};
+    assign r_en = (read_state == READ_RX_DATA);
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                                                                                           //
@@ -187,7 +187,7 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                             end
                         DECODE :
                             begin
-                                 if(araddr[ALIGN_BITS-1:0] == 0 && (araddr >={BASE_ADDRESS,START_OFFSET}  && araddr<={BASE_ADDRESS,TOTAL_BYTES}) /*&& tx_fifo_mem_left>=((awlen+1)*(1<<awsize))*/)
+                                 if(araddr[ALIGN_BITS-1:0] == 0 && (araddr >={BASE_ADDRESS,START_OFFSET}  && araddr<={BASE_ADDRESS,END_OFFSET}) /*&& tx_fifo_mem_left>=((awlen+1)*(1<<awsize))*/)
                                     begin
                                         read_state <= READ_RX_DATA;
                                         r_addr <= araddr[OFFSET_START_BITS-1:0];
@@ -198,9 +198,38 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                         rresp <= SLVERR;
                                         if(wr_r_fifo_en && wr_r_fifo_ready)
                                             begin
-                                                
+                                                read_state <= IDEL;
                                             end
                                     end                       
+                            end
+                        READ_RX_DATA:
+                            begin
+                                if(!char_time_out)
+                                    begin
+                                        if(rx_data_valid)
+                                            begin
+                                                wr_r_fifo_en <= 1;
+                                                rresp <= OKAY;
+                                                if(wr_r_fifo_en && wr_r_fifo_ready && read_beat_count == arlen)
+                                                    begin
+                                                        read_state <= IDEL;
+                                                        read_beat_count <= 0;
+                                                    end
+                                                else
+                                                    begin
+                                                        read_beat_count <= read_beat_count +1;
+                                                    end
+                                            end
+                                    end
+                                else
+                                    begin
+                                        wr_r_fifo_en <= 1;
+                                        rresp <= SLVERR;
+                                        if(wr_r_fifo_en && wr_r_fifo_ready)
+                                            begin
+                                                read_state <= IDEL;
+                                            end
+                                    end
                             end
                     endcase
                 

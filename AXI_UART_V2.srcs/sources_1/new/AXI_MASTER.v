@@ -85,7 +85,7 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
     reg [1:0] aw_next_state,w_next_state,b_next_state,ar_next_state,r_next_state;
     reg [LEN_WIDTH-1:0] r_awlen,r_arlen;
     reg [LEN_WIDTH-1:0] beat_counter;
-    parameter IDEL= 2'b00, START=2'b01;
+    parameter IDEL= 2'b00, START=2'b01,DATA = 2'b10;
     
     
     initial
@@ -183,8 +183,13 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
                                     end
                                 else if(wvalid && wready)
                                     begin
-                                        beat_counter <= beat_counter+1;
+                                        w_state <= DATA;
                                     end
+                            end
+                        DATA :
+                            begin
+                                beat_counter <= beat_counter+1;
+                                w_state <=START;
                             end
                     endcase
                     

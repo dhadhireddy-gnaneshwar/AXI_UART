@@ -10,8 +10,8 @@ module W_FIFO #(parameter ADDR_WIDTH=32,
     input areset,
     
     input wvalid,
-    input [DATA_WIDTH-1:0] wdata,
-    input [(DATA_WIDTH/8)-1:0] wstrb,
+    input [DATA_WIDTH-1:0] wfifo_wdata,
+    input [(DATA_WIDTH/8)-1:0] wfifo_wstrb,
     input wlast,
     output wready,
     
@@ -25,7 +25,7 @@ module W_FIFO #(parameter ADDR_WIDTH=32,
     
     localparam WDATA_FIFO_WIDTH = DATA_WIDTH + (DATA_WIDTH/8);
     wire [WDATA_FIFO_WIDTH-1:0] data;
-    assign data = {wstrb, wdata};
+    assign data = {wfifo_wstrb, wfifo_wdata};
     
     FIFO #(
     .DATA_WIDTH(WDATA_FIFO_WIDTH),

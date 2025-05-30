@@ -48,8 +48,8 @@ module WRITE_BUFFER #(parameter ADDR_WIDTH=32,
     output addr_read_ready,
     //AXI W CHANNEL FIFO WRITE PORT DECLARATION
     input wvalid,
-    input [DATA_WIDTH-1:0] wdata,
-    input [(DATA_WIDTH/8)-1:0] wstrb,
+    input [DATA_WIDTH-1:0] in_wdata,
+    input [(DATA_WIDTH/8)-1:0] in_wstrb,
     input wlast,
     output wready,
     //W CHANNEL FIFO READ_PORT_DEFINATION
@@ -104,8 +104,8 @@ module WRITE_BUFFER #(parameter ADDR_WIDTH=32,
                     .areset(areset),
                     
                     .wvalid(wvalid),
-                    .wdata(wdata),
-                    .wstrb(wstrb),
+                    .wfifo_wdata(in_wdata),
+                    .wfifo_wstrb(in_wstrb),
                     .wlast(wlast),
                     .wready(wready),
                     

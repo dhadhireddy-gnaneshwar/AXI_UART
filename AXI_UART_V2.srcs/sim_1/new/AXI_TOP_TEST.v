@@ -111,13 +111,15 @@
         burst_type = 2'b01; // INCR
         in_strb = 8'hFF;
         trigger = 1;
+        #10;
+        trigger = 0;
+        in_data = "HELLO!";
         repeat(in_len)
             begin
-                in_data = "HELLO!";
-                @(negedge wvalid);
+                @(posedge wvalid)
+                in_data = {"HELLO",in_data[7:0]};
             end
-        #70;
-        trigger = 0;
+        
 
         // Wait for awvalid & awready handshake
         wait (dut.master_inst.awvalid && awready);
