@@ -83,6 +83,10 @@ module FIFO #(parameter DATA_WIDTH=32,
                                         wr_pointer <= (wr_pointer +1)%DEPTH;
                                         wr_state <= IDEL;
                                     end
+                                else
+                                    begin
+                                        wr_state <= IDEL;
+                                    end
                             end
                     endcase
                     

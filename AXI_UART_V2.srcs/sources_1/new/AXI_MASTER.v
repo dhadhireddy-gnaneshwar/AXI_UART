@@ -87,7 +87,6 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
     reg [LEN_WIDTH-1:0] beat_counter;
     parameter IDEL= 2'b00, START=2'b01,DATA = 2'b10;
     
-    
     initial
         begin
             {aw_state,w_state,b_state,ar_state,r_state}=10'h0;
@@ -107,7 +106,7 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
     //-----------W CHANNEL PORT ASSIGNMENTS BEGIN------------------------\\
      assign wvalid = (w_state==START);
      assign wlast  = ((w_state==START) && wvalid && beat_counter == r_awlen)?1:0;
-     assign wdata  = ((w_state==START) && wvalid) ? in_data : 0;
+     assign wdata  = in_data;
      assign wstrb  = ((w_state==START) && wvalid) ? in_strb : 0;
      //-----------W CHANNEL PORT ASSIGNMENTS END ------------------------ \\
      //-------------------------------------------------------------------\\
@@ -172,11 +171,12 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
                                 if(awvalid && awready)
                                     begin
                                        w_state<= START;
+                                       
                                     end
                             end
                         START:
                             begin
-                                if(beat_counter == r_awlen)
+                                if(beat_counter == r_awlen+1)
                                     begin
                                         w_state <= IDEL; 
                                         beat_counter <= 0;

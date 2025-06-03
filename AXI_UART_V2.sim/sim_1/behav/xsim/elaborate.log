@@ -4,9 +4,6 @@ Running: C:/Xilinx/Vivado/2019.2/bin/unwrapped/win64.o/xelab.exe -wto 2e702ec8cc
 Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-3091] actual bit length 64 differs from formal bit length 72 for port 'out_wdata' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:242]
-WARNING: [VRFC 10-3091] actual bit length 64 differs from formal bit length 72 for port 'out_wdata' [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v:324]
-WARNING: [VRFC 10-5021] port 'ar_addr_read' is not connected on this instance [C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sim_1/new/AXI_TOP_TEST.v:67]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis
@@ -22,6 +19,10 @@ Compiling module xil_defaultlib.FIFO(DATA_WIDTH=71)
 Compiling module xil_defaultlib.R_FIFO_default
 Compiling module xil_defaultlib.READ_BUFFER
 Compiling module xil_defaultlib.WRITE_BUFFER_CONTROLLER(W_DEPTH=...
+Compiling module xil_defaultlib.READ_BUFFER_CONTROLLER(W_DEPTH=3...
+Compiling module xil_defaultlib.UART_FIFO(DATA_WIDTH=8)
+Compiling module xil_defaultlib.UART_FIFO(DATA_WIDTH=64)
+Compiling module xil_defaultlib.UART_CONTROLLER(W_DEPTH=32,R_DEP...
 Compiling module xil_defaultlib.AXI_TOP_WRAPPER
 Compiling module xil_defaultlib.AXI_TOP_TEST
 Compiling module xil_defaultlib.glbl

@@ -17,10 +17,10 @@ module R_FIFO #(parameter ADDR_WIDTH=32,
     input aclk,
     input areset,
     output rvalid,
-    output reg [DATA_WIDTH-1:0] rdata,
-    output reg [ID_WIDTH-1:0] rid,
+    output [DATA_WIDTH-1:0] rdata,
+    output [ID_WIDTH-1:0] rid,
     output rlast,
-    output reg [RESPONSE_WIDTH-1:0] rresp,
+    output [RESPONSE_WIDTH-1:0] rresp,
     input rready 
     
     );
@@ -31,13 +31,16 @@ module R_FIFO #(parameter ADDR_WIDTH=32,
     
     reg [1:0] r_fifo_state;
     reg r_fifo_rd_en;
-    reg [R_DATA_FIFO_WIDTH-1:0] sync1,sync2;
+    reg [R_DATA_FIFO_WIDTH-1:0] sync1;
     
     wire rd_ready;
     wire [R_DATA_FIFO_WIDTH-1:0] out_rdata;
     
-    assign rlast = (sync2[R_DATA_FIFO_WIDTH-1:R_DATA_FIFO_WIDTH-(DATA_WIDTH+RESPONSE_WIDTH)] == out_rdata[R_DATA_FIFO_WIDTH-1:R_DATA_FIFO_WIDTH-(DATA_WIDTH+RESPONSE_WIDTH)])?0:1;  
+    assign rlast = (sync1[R_DATA_FIFO_WIDTH-1:R_DATA_FIFO_WIDTH-(DATA_WIDTH+RESPONSE_WIDTH)] == out_rdata[R_DATA_FIFO_WIDTH-1:R_DATA_FIFO_WIDTH-(DATA_WIDTH+RESPONSE_WIDTH)])?0:1;  
     assign rvalid = (r_fifo_state == SEND);
+    assign rid =  sync1[R_DATA_FIFO_WIDTH-1 -: ID_WIDTH];
+    assign rdata = sync1[RESPONSE_WIDTH +: DATA_WIDTH];
+    assign rresp = sync1[RESPONSE_WIDTH-1:0];
     
     FIFO #(
     .DATA_WIDTH(R_DATA_FIFO_WIDTH),
@@ -90,7 +93,7 @@ module R_FIFO #(parameter ADDR_WIDTH=32,
                             end
                         SYNCRONIZE:
                             begin
-                                sync2 <= sync1;
+//                                sync2 <= sync1;
                                 r_fifo_state <= SEND;
                             end
                         SEND :
@@ -98,9 +101,7 @@ module R_FIFO #(parameter ADDR_WIDTH=32,
                                 if(rvalid && rready)
                                     begin
                                         r_fifo_state <= IDEL;
-                                        rid <=  sync2[R_DATA_FIFO_WIDTH-1 -: ID_WIDTH];
-                                        rdata <= sync2[RESPONSE_WIDTH +: DATA_WIDTH];
-                                        rresp <= sync2[RESPONSE_WIDTH-1:0];
+                                        
                                     end
                             end
                     endcase

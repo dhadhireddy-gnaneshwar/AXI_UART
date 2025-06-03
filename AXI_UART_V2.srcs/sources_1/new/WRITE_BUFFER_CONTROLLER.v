@@ -64,7 +64,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     output reg [DATA_WIDTH-1:0] tx_data,
     output tx_data_valid,
     output reg [OFFSET_START_BITS-1:0] addr,
-    input [$clog2(UART_TX_FIFO_DEPTH*(DATA_WIDTH/8))-1:0] tx_fifo_mem_left,
+    input [9:0] tx_fifo_mem_left,
     input tx_ready
     );
     
@@ -86,7 +86,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     localparam SLVERR = 3'b010, DECERR = 3'b011,OKAY = 000;
 
     reg [BYTES_WIDTH:0] beat_count ;
-    reg [1:0] state;
+    reg [2:0] state;
     reg [OFFSET_START_BITS-1:0] r_addr;
     //STATUS REG DATA
     wire r_data_ready, over_run, parity_error, frame_error, rx_fifo_full, rx_fifo_empty, tx_fifo_empty, tx_fifo_full;
@@ -131,6 +131,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     //WRITE CONTROLLER PORT LOGIC
     assign addr_read = (state==READ_TX_DATA)?1:0;
     assign read_wdata  = (state == SEND_DATA);
+    assign tx_data_valid = (state == SEND_DATA && beat_count <= awlen+1);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                                                                                           //
     //                                                                                                                                           //
@@ -161,7 +162,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                     bid <= 0;
                 end
             else
-                begin
+                begin 
                     case(state)
                         IDEL:
                             begin
@@ -182,7 +183,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                             end
                         DECODE:
                             begin
-                                if(awaddr[ALIGN_BITS-1:0] == 0 && (awaddr >={BASE_ADDRESS,START_OFFSET}  && awaddr<={BASE_ADDRESS,TOTAL_BYTES}) /*&& tx_fifo_mem_left>=((awlen+1)*(1<<awsize))*/)
+                                if(awaddr[ALIGN_BITS-1:0] == 0 && (awaddr >={BASE_ADDRESS,START_OFFSET}  && awaddr<={BASE_ADDRESS,TOTAL_BYTES}) && tx_fifo_mem_left>=((awlen+1)*(1<<awsize)))
                                     begin
                                         state <= SEND_DATA;
                                         r_addr <= awaddr[OFFSET_START_BITS-1:0];
@@ -201,7 +202,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                             end
                         SEND_DATA :
                             begin
-                                if(beat_count <= awlen)
+                                if(beat_count <= awlen+1)
                                     begin
                                         tx_data <= wdata;
                                         addr <= r_addr;

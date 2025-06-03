@@ -16,7 +16,8 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
      parameter BASE_ADDRESS  = 16'hE100,
      parameter START_OFFSET = 16'h0000,
      parameter END_OFFSET  = 16'h00810,
-     parameter OFFSET_START_BITS = 16
+     parameter OFFSET_START_BITS = 8,
+     parameter CTRL_REG_WIDTH =32
      )
 (
     input trigger,
@@ -25,7 +26,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     input areset,
     input rd_clk,
     input [ADDR_WIDTH-1:0] in_addr,
-    input [DATA_WIDTH-1:0] in_data,
+    input [DATA_WIDTH-1:0] axi_in_data,
     input [ID_WIDTH-1:0] in_id,
     input [LEN_WIDTH-1:0] in_len,
     input [1:0] burst_type,
@@ -42,14 +43,14 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
 //    output w_empty,
 //    output [DATA_WIDTH+(DATA_WIDTH/8)-1:0] out_wdata,
     //FIFO AR READ PORTS
-    input ar_addr_read,
+//    input ar_addr_read,
     output ar_read_ready,
     output arfull,
     output arempty,
     output [ADDR_WIDTH+ID_WIDTH+SIZE_WIDTH+LEN_WIDTH+1:0] ar_addr_out,
     //FIFO READ DATA PORT DECLARATION 
-    input [ID_WIDTH+DATA_WIDTH+RESPONSE_WIDTH-1:0] wr_r_fifo_data,
-    input wr_r_fifo_en,
+    output [ID_WIDTH+DATA_WIDTH+RESPONSE_WIDTH-1:0] wr_r_fifo_data,
+//    input wr_r_fifo_en,
     output wr_r_fifo_ready,
     output r_full,
     output r_empty,
@@ -59,13 +60,15 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     output [ID_WIDTH-1:0] read_id,
     output wvalid_o,
     //write controllrt ports
-    input  [DATA_WIDTH-1:0] tx_data,
+    
     output tx_data_valid,
-    input [OFFSET_START_BITS-1:0] addr,
-    output [$clog2(UART_TX_FIFO_DEPTH*(DATA_WIDTH/8))-1:0] tx_fifo_mem_left,
-    output tx_ready
+    output [OFFSET_START_BITS-1:0] addr,
+    output [9:0] tx_fifo_mem_left,
+    output tx_ready,
+    output A
 );
-
+    wire  [DATA_WIDTH-1:0] tx_data;
+    wire  [DATA_WIDTH-1:0] rx_data;
     wire [ADDR_WIDTH-1:0] awaddr;
     wire [ID_WIDTH-1:0] awid;
     wire [SIZE_WIDTH-1:0] awsize;
@@ -73,10 +76,12 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     wire [LEN_WIDTH-1:0] awlen;
     wire awvalid;
     wire awready;
+    
 
     wire wvalid;
     wire wready;
-    wire [DATA_WIDTH-1:0] wdata,w_data,w_out_wdata;
+    wire [DATA_WIDTH-1:0] wdata,w_data;
+     wire [DATA_WIDTH+(DATA_WIDTH/8)-1:0]w_out_wdata;
     wire [(DATA_WIDTH/8)-1:0] wstrb;
     wire wlast;
 
@@ -101,6 +106,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
     wire [RESPONSE_WIDTH-1:0] rresp;
     wire [ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+1:0] out_addr_o;
     wire out_data_ready;
+    assign A = tx_ready;
     assign out_data_ready = read_wdata ;
     assign wvalid_o = wready;
 
@@ -119,7 +125,7 @@ module AXI_TOP_WRAPPER #(parameter ADDR_WIDTH = 32,
         .in_id(in_id),
         .in_len(in_len),
         .burst_type(burst_type),
-        .in_data(in_data),
+        .in_data(axi_in_data),
         .in_strb(in_strb),
         .aclk(aclk),
         .areset(areset),
@@ -309,7 +315,7 @@ WRITE_BUFFER_CONTROLLER #(
     .START_OFFSET(START_OFFSET),
     .END_OFFSET(END_OFFSET),
     .OFFSET_START_BITS(OFFSET_START_BITS)
-) write_buffer_controller_inst (
+) WRITE_CONTROL (
     .rd_clk(rd_clk),            // inp
     .rst(areset),               // inp
     .addr_read(addr_read),         // o
@@ -337,4 +343,96 @@ WRITE_BUFFER_CONTROLLER #(
 // initial achara = 8'h41;
  
 // $display("the data is %c ===================",achara);
+// Module Instantiation
+wire [7:0] rx_addr;
+READ_BUFFER_CONTROLLER #(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH),
+    .ID_WIDTH(ID_WIDTH),
+    .SIZE_WIDTH(SIZE_WIDTH),
+    .LEN_WIDTH(LEN_WIDTH),
+    .RESPONSE_WIDTH(RESPONSE_WIDTH),
+    .AR_DEPTH(AR_DEPTH),
+    .W_DEPTH(W_DEPTH),
+    .AW_DEPTH(AW_DEPTH),
+    .R_DEPTH(R_DEPTH),
+    .ADDR_OFFSET(ADDR_OFFSET),
+    .CONTL_REG_WIDTH(CONTL_REG_WIDTH),
+    .STATUS_REG_WIDTH(STATUS_REG_WIDTH),
+    .UART_TX_FIFO_DEPTH(UART_TX_FIFO_DEPTH),
+    .UART_RX_FIFO_DEPTH(UART_RX_FIFO_DEPTH),
+    .BASE_ADDRESS(BASE_ADDRESS),
+    .START_OFFSET(START_OFFSET),
+    .END_OFFSET(END_OFFSET),
+    .OFFSET_START_BITS(OFFSET_START_BITS)
+) read_buffer_ctrl_inst (
+    .rd_clk(rd_clk),
+    .rst(rst),
+
+    // FIFO AR READ
+    .ar_addr_read(ar_addr_read),
+    .ar_read_ready(ar_read_ready),
+    .arfull(arfull),
+    .arempty(arempty),
+    .ar_addr_out(ar_addr_out),
+
+    // FIFO R WRITE
+    .r_fifo_wr_clk(r_fifo_wr_clk),
+    .wr_r_fifo_data(wr_r_fifo_data),
+    .wr_r_fifo_en(wr_r_fifo_en),
+    .wr_r_fifo_ready(wr_r_fifo_ready),
+    .r_full(r_full),
+    .r_empty(r_empty),
+
+    // UART CONTROLLER INTERFACE
+    .rx_data(rx_data),
+    .rx_data_valid(rx_data_valid),
+    .addr(rx_addr),
+    .rx_en(rx_en),
+    .char_time_out(char_time_out)
+);
+
+wire r_tx,r_rx;
+    UART_CONTROLLER #(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH),
+    .ID_WIDTH(ID_WIDTH),
+    .SIZE_WIDTH(SIZE_WIDTH),
+    .LEN_WIDTH(LEN_WIDTH),
+    .RESPONSE_WIDTH(RESPONSE_WIDTH),
+    .AR_DEPTH(AR_DEPTH),
+    .W_DEPTH(W_DEPTH),
+    .AW_DEPTH(AW_DEPTH),
+    .R_DEPTH(R_DEPTH),
+    .ADDR_OFFSET(ADDR_OFFSET),
+    .CONTL_REG_WIDTH(CONTL_REG_WIDTH),
+    .STATUS_REG_WIDTH(STATUS_REG_WIDTH),
+    .UART_TX_FIFO_DEPTH(UART_TX_FIFO_DEPTH),
+    .UART_RX_FIFO_DEPTH(UART_RX_FIFO_DEPTH),
+    .CTRL_REG_WIDTH(CTRL_REG_WIDTH)
+) UART_CONTROL (
+    // UART CONTROLLER PORT
+    .uart_clk(uart_clk), 
+
+    // WRITE BUFFER CONTROLLER PORT 
+    .rd_clk(rd_clk),
+    .tx_data(tx_data),
+    .tx_data_valid(tx_data_valid),
+    .tx_addr(addr),
+    .tx_fifo_mem_left(tx_fifo_mem_left),
+    .tx_ready(tx_ready),
+
+    // READ BUFFER CONTROLLER PORT 
+    .rx_data(rx_data),
+    .rx_data_valid(rx_data_valid),
+    .rx_addr(rx_addr),
+    .rx_en(rx_en),
+//    .char_time_out(char_time_out),
+////
+    // UART PORTS
+    .rx(r_rx),
+    .tx(r_rx),
+    
+    .rst(areset)
+);
 endmodule

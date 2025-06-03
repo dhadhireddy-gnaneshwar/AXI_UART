@@ -83,9 +83,9 @@
         .in_len(in_len),
         .burst_type(burst_type),
         .in_strb(in_strb),
-//        .addr_read_ready(addr_read_ready),
+//          .addr_read_ready(addr_read_ready),
         .wvalid_o(wvalid),
-        .in_data(in_data)
+        .axi_in_data(in_data)
     );
 
     initial begin
@@ -105,9 +105,9 @@
         #20;
 
         // Set up AW transaction
-        in_addr = 32'hE100_0000;
+        in_addr = 32'hE100_0018;
         in_id = 4'h3;
-        in_len = 8'h04;  // 5 transfers
+        in_len = 8'h00;  // 5 transfers
         burst_type = 2'b01; // INCR
         in_strb = 8'hFF;
         trigger = 1;

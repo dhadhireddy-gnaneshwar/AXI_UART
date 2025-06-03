@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date         : Thu May 22 10:49:40 2025
+| Date         : Mon Jun  2 15:44:08 2025
 | Host         : GNANESHWAR running 64-bit major release  (build 9200)
 | Command      : report_utilization -file AXI_TOP_WRAPPER_utilization_synth.rpt -pb AXI_TOP_WRAPPER_utilization_synth.pb
 | Design       : AXI_TOP_WRAPPER
@@ -30,11 +30,11 @@ Table of Contents
 +-------------------------+------+-------+-----------+-------+
 |        Site Type        | Used | Fixed | Available | Util% |
 +-------------------------+------+-------+-----------+-------+
-| Slice LUTs*             |  314 |     0 |    218600 |  0.14 |
-|   LUT as Logic          |  314 |     0 |    218600 |  0.14 |
+| Slice LUTs*             |  190 |     0 |    218600 |  0.09 |
+|   LUT as Logic          |  190 |     0 |    218600 |  0.09 |
 |   LUT as Memory         |    0 |     0 |     70400 |  0.00 |
-| Slice Registers         |  305 |     0 |    437200 |  0.07 |
-|   Register as Flip Flop |  305 |     0 |    437200 |  0.07 |
+| Slice Registers         |  392 |     0 |    437200 |  0.09 |
+|   Register as Flip Flop |  392 |     0 |    437200 |  0.09 |
 |   Register as Latch     |    0 |     0 |    437200 |  0.00 |
 | F7 Muxes                |    0 |     0 |    109300 |  0.00 |
 | F8 Muxes                |    0 |     0 |     54650 |  0.00 |
@@ -56,8 +56,8 @@ Table of Contents
 | 0     |          Yes |           - |            - |
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
-| 4     |          Yes |         Set |            - |
-| 301   |          Yes |       Reset |            - |
+| 12    |          Yes |         Set |            - |
+| 380   |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -67,9 +67,9 @@ Table of Contents
 +-------------------+------+-------+-----------+-------+
 |     Site Type     | Used | Fixed | Available | Util% |
 +-------------------+------+-------+-----------+-------+
-| Block RAM Tile    |    6 |     0 |       545 |  1.10 |
-|   RAMB36/FIFO*    |    6 |     0 |       545 |  1.10 |
-|     RAMB36E1 only |    6 |       |           |       |
+| Block RAM Tile    |    4 |     0 |       545 |  0.73 |
+|   RAMB36/FIFO*    |    4 |     0 |       545 |  0.73 |
+|     RAMB36E1 only |    4 |       |           |       |
 |   RAMB18          |    0 |     0 |      1090 |  0.00 |
 +-------------------+------+-------+-----------+-------+
 * Note: Each Block RAM Tile only has one FIFO logic available and therefore can accommodate only one FIFO36E1 or one FIFO18E1. However, if a FIFO18E1 occupies a Block RAM Tile, that tile can still accommodate a RAMB18E1
@@ -91,7 +91,7 @@ Table of Contents
 +-----------------------------+------+-------+-----------+--------+
 |          Site Type          | Used | Fixed | Available |  Util% |
 +-----------------------------+------+-------+-----------+--------+
-| Bonded IOB                  |  388 |     0 |       362 | 107.18 |
+| Bonded IOB                  |  398 |     0 |       362 | 109.94 |
 | Bonded IPADs                |    0 |     0 |        50 |   0.00 |
 | Bonded OPADs                |    0 |     0 |        32 |   0.00 |
 | Bonded IOPADs               |    0 |     0 |       130 |   0.00 |
@@ -153,18 +153,19 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     |  301 |        Flop & Latch |
-| OBUF     |  254 |                  IO |
-| LUT2     |  226 |                 LUT |
-| IBUF     |  134 |                  IO |
-| LUT6     |   67 |                 LUT |
-| LUT3     |   30 |                 LUT |
-| LUT5     |   27 |                 LUT |
-| LUT4     |   23 |                 LUT |
-| LUT1     |   14 |                 LUT |
-| CARRY4   |   10 |          CarryLogic |
-| RAMB36E1 |    6 |        Block Memory |
-| FDSE     |    4 |        Flop & Latch |
+| FDRE     |  380 |        Flop & Latch |
+| OBUF     |  201 |                  IO |
+| IBUF     |  188 |                  IO |
+| LUT2     |  101 |                 LUT |
+| LUT3     |   62 |                 LUT |
+| LUT6     |   40 |                 LUT |
+| LUT5     |   29 |                 LUT |
+| LUT4     |   19 |                 LUT |
+| FDSE     |   12 |        Flop & Latch |
+| CARRY4   |   11 |          CarryLogic |
+| OBUFT    |    9 |                  IO |
+| LUT1     |    9 |                 LUT |
+| RAMB36E1 |    4 |        Block Memory |
 | BUFG     |    2 |               Clock |
 +----------+------+---------------------+
 

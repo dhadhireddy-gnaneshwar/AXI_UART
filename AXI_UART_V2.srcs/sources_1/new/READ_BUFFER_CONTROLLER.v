@@ -38,20 +38,19 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
      parameter BASE_ADDRESS  = 16'hE100,
      parameter START_OFFSET = 16'h0000,
      parameter END_OFFSET  = 16'h00810,
-     parameter OFFSET_START_BITS = 16
+     parameter OFFSET_START_BITS = 8
      )(
      //READ CONTROLLER PORT DECLARATION
      input rd_clk,
      input rst,
      //FIFO AR READ PORTS
-    input rd_clk,
     output reg ar_addr_read,
     input ar_read_ready,
     input arfull,
     input arempty,
     input [ADDR_WIDTH+ID_WIDTH+SIZE_WIDTH+LEN_WIDTH+1:0] ar_addr_out,
     //FIFO R READ PORTS
-    output r_fifo_wr_clk,
+    input r_fifo_wr_clk,
     output [ID_WIDTH+DATA_WIDTH+RESPONSE_WIDTH-1:0] wr_r_fifo_data,
     output reg wr_r_fifo_en,
     input wr_r_fifo_ready,
@@ -61,7 +60,7 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     //UART CONTROLLER PORT DECLARATION
     input [DATA_WIDTH-1:0] rx_data,
     input rx_data_valid,
-    output reg [OFFSET_START_BITS-1:0] addr,
+    output [OFFSET_START_BITS-1:0] addr,
     output rx_en,
     input char_time_out
     );
@@ -111,7 +110,7 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
 //    assign awlen   = out_addr[AW_FIFO_WIDTH-3-ID_WIDTH : AW_FIFO_WIDTH-2-ID_WIDTH-LEN_WIDTH];
 //    assign awsize  = out_addr[AW_FIFO_WIDTH-3-ID_WIDTH-LEN_WIDTH : AW_FIFO_WIDTH-2-ID_WIDTH-LEN_WIDTH-SIZE_WIDTH];
 //    assign awaddr  = out_addr[AW_FIFO_WIDTH-3-ID_WIDTH-LEN_WIDTH-SIZE_WIDTH : 0];
-      assign {arburst,arid,arlen,arsize,araddr} = addr;
+      assign {arburst,arid,arlen,arsize,araddr} = ar_addr_out;
     
     //========DE-FRAMING W FIFO OUT DATA================\\
     
@@ -132,8 +131,8 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     //READ CONTROLLER PORT LOGIC
     assign rlast = (read_beat_count == arlen || rresp != OKAY);
     assign wr_r_fifo_data  = {arid,rx_data,rresp};
-    assign r_en = (read_state == READ_RX_DATA);
-    
+    assign rx_en = (read_state == READ_RX_DATA);
+    assign addr = araddr[7:0];
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                                                                                           //
     //                                                                                                                                           //
@@ -169,7 +168,7 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                         IDEL:
                             begin
                             read_beat_count <=0;
-                                if(!arempty )
+                                if(!arempty && !r_empty)
                                     begin
                                         read_state <= READ_RX_ADDR;
                                     end
@@ -210,7 +209,7 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                             begin
                                                 wr_r_fifo_en <= 1;
                                                 rresp <= OKAY;
-                                                if(wr_r_fifo_en && wr_r_fifo_ready && read_beat_count == arlen)
+                                                if(wr_r_fifo_en && wr_r_fifo_ready && read_beat_count == arlen+1)
                                                     begin
                                                         read_state <= IDEL;
                                                         read_beat_count <= 0;
