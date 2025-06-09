@@ -44,62 +44,66 @@ module UART_FIFO #(parameter DATA_WIDTH=32,
     localparam COUNTER_WIDTH = $clog2(DEPTH);
     localparam BYTES = DATA_WIDTH/8;
     localparam BYTE_POINTER_WIDTH = $clog2(DEPTH*8);
-    localparam IDEL = 2'b0, WRITE = 2'b01, READ = 2'b10; 
+    localparam IDEL = 2'b0, WRITE = 2'b01, READ = 2'b10,DONE=2'b11; 
     
 
     reg [DATA_WIDTH-1 : 0] mem [0 : DEPTH-1];
     reg [1:0] wr_state,rd_state;
     reg [COUNTER_WIDTH :0] wr_pointer, rd_pointer;
     reg [DATA_WIDTH-1 : 0] sync_1;
-    
+    integer i;
     assign wr_ready = (!(wr_state==IDEL));
-    assign rd_ready = (!(rd_state==IDEL));
-    assign full =  rst?0:((wr_pointer + 1) % DEPTH) == rd_pointer;
+    assign rd_ready = (!(rd_state==IDEL || rd_state == READ));
+    assign full =  ~rst?0:((wr_pointer + 1) % DEPTH) == rd_pointer;
     assign empty = (wr_pointer == rd_pointer);
     assign used_entries = (wr_pointer >= rd_pointer) ? 
                       (wr_pointer - rd_pointer) : 
                       (DEPTH - rd_pointer + wr_pointer);
     
 //======= WRITE LOGIC DEFINATION =======\\  
-    always@(posedge wr_clk)
-            begin
-            if(rst)
-                begin
-                    wr_pointer <= 0;
-                    wr_state<=IDEL;
+//======= WRITE POINTER AND STATE =======\\  
+always @(posedge wr_clk or negedge rst) begin
+    if (!rst) begin
+        wr_pointer <= 0;
+        wr_state <= IDEL;
+        sync_1 <= 0;
+    end else begin
+        case (wr_state)
+            IDEL: begin
+                if (wr_en) begin
+                    wr_state <= WRITE;
+                    sync_1 <= wr_data;
                 end
-            else
-                begin
-                    case(wr_state)
-                        IDEL:
-                            begin
-                                if(wr_en)
-                                    begin
-                                        wr_state <= WRITE;
-                                        sync_1 <= wr_data;
-                                    end
-                            end
-                        WRITE:
-                            begin
-                                if(!full && wr_en )
-                                    begin
-                                        mem[wr_pointer] <= sync_1;;
-                                        wr_pointer <= (wr_pointer +1)%DEPTH;
-                                        wr_state <= IDEL;
-                                    end
-                            end
-                    endcase
-                    
+            end
+            WRITE: begin
+                if (!full) begin
+                    wr_state <= IDEL;
+                    wr_pointer <= (wr_pointer + 1) % DEPTH;
+                end else begin
+                    wr_state <= IDEL;
                 end
-        end
+            end
+            default: wr_state <= IDEL;
+        endcase
+    end
+end
+
+//======= SEPARATE MEMORY WRITE LOGIC =======\\  
+always @(posedge wr_clk) begin
+    if (wr_state == WRITE && !full) begin
+        mem[wr_pointer] <= sync_1;
+    end
+end
+
         
 //======= READ LOGIC DEFINATION =======\\  
-        always@(posedge rd_clk)
+        always@(posedge rd_clk or negedge rst)
             begin
-            if(rst)
+            if(!rst)
                 begin
                     rd_pointer <= 0;
                     rd_state<=IDEL;
+                    rd_data <=0;
                 end
             else
                 begin
@@ -113,12 +117,16 @@ module UART_FIFO #(parameter DATA_WIDTH=32,
                             end
                         READ:
                             begin
-                                if(!empty && rd_en )
+                                if(!empty )
                                     begin
                                         rd_data <= mem [rd_pointer];
-                                        rd_pointer <= (rd_pointer +1)%DEPTH;
-                                        rd_state <= IDEL;
+                                        rd_state <= DONE;
                                     end
+                            end
+                        DONE:
+                            begin
+                                rd_state <= IDEL;
+                                rd_pointer <= (rd_pointer +1)%DEPTH;
                             end
                         default: rd_state <= IDEL;
                     endcase

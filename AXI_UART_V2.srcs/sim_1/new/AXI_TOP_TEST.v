@@ -5,7 +5,7 @@
 // 
 // Create Date: 15.05.2025 17:33:58
 // Design Name: 
-// Module Name: AXI_TOP_TEST
+// Module Name: AXI_TOP_TEST  
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -37,6 +37,9 @@
     reg areset = 0;
     reg rd_clk =0;
     reg [7:0] D;
+    reg [63:0] write_mem [7:0];
+    
+    
 
     always #5 aclk = ~aclk;  // 100 MHz clock
     always #7 rd_clk = ~rd_clk;
@@ -49,8 +52,9 @@
     reg [1:0] burst_type;
     reg [(DATA_WIDTH/8)-1:0] in_strb;
     reg [DATA_WIDTH-1:0] in_data;
+    wire [DATA_WIDTH-1:0] out_data;
     // Unused ports for simplicity
-    wire r_trigger = 0;
+    reg r_trigger = 0;
     wire addr_read = 0;
     wire addr_read_ready;
 
@@ -62,6 +66,7 @@
     wire [LEN_WIDTH-1:0] awlen;
     wire wvalid;
     wire awready;
+    wire rvalid,rx_done;
 
     // Instantiate DUT (Top module)
     AXI_TOP_WRAPPER #(
@@ -85,11 +90,65 @@
         .in_strb(in_strb),
 //          .addr_read_ready(addr_read_ready),
         .wvalid_o(wvalid),
-        .axi_in_data(in_data)
+        .axi_in_data(in_data),
+        .rx_done_uart(rx_done),
+        .rvalid_out(rvalid),
+        .rlast_out(rlast),
+        .axi_out_data(out_data)
     );
+reg        tx_fifo_rst;
+reg        rx_fifo_rst;
+reg        tx_enable;
+reg        rx_enable;
+reg        stop_bit;
+reg        parity_bit;
+reg [4:0]  sample_rate;
+reg [4:0]  tx_trig;
+reg [3:0]  rx_trig;
+reg [3:0]  data_bits;
+reg write=0;
+reg [63:0] cntrl_reg;
+reg [4:0] write_count =1;
+integer a=0;
 
+initial begin
+    // Assign values
+    tx_fifo_rst  = 1'b1;
+    rx_fifo_rst  = 1'b1;
+    tx_enable    = 1'b1;
+    rx_enable    = 1'b1;
+    stop_bit     = 1'b0;        // 1 stop bit
+    parity_bit   = 1'b0;        // no parity
+    sample_rate  = 5'd16;
+    tx_trig      = 5'd8;
+    rx_trig      = 4'd8;
+    data_bits    = 4'd8;
+
+    
+
+    // Combine all into cntrl_reg
+    cntrl_reg = 64'd0;  // Clear first
+
+    cntrl_reg[0]  = tx_fifo_rst;
+    cntrl_reg[1]  = rx_fifo_rst;
+    cntrl_reg[3]  = tx_enable;
+    cntrl_reg[4]  = rx_enable;
+    cntrl_reg[5]  = stop_bit;
+    cntrl_reg[6]  = parity_bit;
+
+    cntrl_reg[13:9]   = sample_rate;
+    cntrl_reg[18:14]  = tx_trig;
+    cntrl_reg[22:19]  = rx_trig;
+    cntrl_reg[26:23]  = data_bits;
+
+    // Remaining bits [63:27] are reserved and left as 0
+end
+reg start =0;
+wire [4:0] last = count -1;
     initial begin
+        $readmemh("C:/Users/demon/AppData/Roaming/Xilinx/Vivado/input.hex", write_mem);
         $display("Starting AW channel test...");
+        a=write_mem[0];
         D = 8'h41;
         $display("DF===== %0c",D);
         // Reset logic
@@ -105,29 +164,73 @@
         #20;
 
         // Set up AW transaction
-        in_addr = 32'hE100_0018;
+        in_addr = 32'hE100_0000;
         in_id = 4'h3;
-        in_len = 8'h00;  // 5 transfers
+        in_len = 8'h02;  // 5 transfers
         burst_type = 2'b01; // INCR
         in_strb = 8'hFF;
         trigger = 1;
+        in_data = cntrl_reg;
+;
         #10;
         trigger = 0;
-        in_data = "HELLO!";
-        repeat(in_len)
-            begin
-                @(posedge wvalid)
-                in_data = {"HELLO",in_data[7:0]};
-            end
+        @(posedge wvalid)
+        in_data = {32'h0,32'h8001_C200};
         
+        #50
+        write =1;
+       
 
         // Wait for awvalid & awready handshake
-        wait (dut.master_inst.awvalid && awready);
-        $display("AW handshake occurred: ADDR=0x%0h, ID=%0h, LEN=%0d", awaddr, awid, awlen);
-
-        #50;
-        $finish;
+        @(posedge rx_done)
+        r_trigger =1;
+        in_addr = 32'hE100_001c;
+        in_id = 4'h3;
+        in_len = 8'h03;  // 5 transfers
+        burst_type = 2'b00; // INCR
+        in_strb = 8'hFF;
+        #20;
+        r_trigger = 0;
+        
+        
+        @(posedge rlast)
+        #1000
+        $writememh("C:/Users/demon/AppData/Roaming/Xilinx/Vivado/filename.hex", mem, start, last);
+//        $finish;
     end
+    reg [63:0] mem [0:7];
+    reg [4:0] count =1;
+    initial 
+        begin
+            forever
+                begin
+                    @(posedge rvalid)
+                    mem[count] = out_data;
+                    count = count +1;
+                end
+        end
+    initial
+        begin
+                @(posedge write)
+                 trigger = 1;
+                 in_addr = 32'hE100_0018;
+                 in_id = 4'h3;
+                 in_len = a[7:0];  // 5 transfers
+                 burst_type = 2'b00; // INCR
+                 in_strb = 8'hFF;
+                  #10;
+                  trigger=0;
+        
+                    forever
+                        begin
+                            @(posedge wvalid)
+                            in_data = write_mem[write_count];
+                            write_count = write_count+1;
+                        end
+                end
+
+
 
 endmodule
+
 

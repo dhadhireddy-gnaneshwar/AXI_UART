@@ -46,6 +46,8 @@ read_verilog -library xil_defaultlib {
   C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/AXI_MASTER_WRAPPER.v
   C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/READ_BUFFER_CONTROLLER.v
   C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/UART_CONTROLLER.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/BAUD_GENRATOR.v
+  C:/Users/demon/INTERNSHIP/src_sim_vivado/AXI_UART_V2/AXI_UART_V2.srcs/sources_1/new/TIMER.v
 }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the

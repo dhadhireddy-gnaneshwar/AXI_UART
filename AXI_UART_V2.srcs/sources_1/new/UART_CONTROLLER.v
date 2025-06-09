@@ -2,13 +2,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
-// 
+//   
 // Create Date: 26.05.2025 17:18:15
 // Design Name: 
 // Module Name: UART_CONTROLLER
-// Project Name: AXI_UART_V2
-// Target Devices: ZYNQ 7000
-// Tool Versions: 
+// Project Name: AXI_UART_V2 
+// Target Devices: ZYNQ 7000  
+// Tool Versions:  
 // Description: 
 // 
 // Dependencies: 
@@ -39,13 +39,17 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
 
     // UART CONTROLLER PORT
     input uart_clk,
-    input rst, 
+    input rst,
+    output rx_done,
+    output [30:0] baud_rate,
+    output baud_en,
+    output [4:0] sample_rate_o, 
     // WRITE BUFFER CONTROLLER PORT 
     input rd_clk,
     input [DATA_WIDTH-1:0] tx_data,
     input tx_data_valid,
     input [7:0] tx_addr,
-    output [9:0] tx_fifo_mem_left,
+    output [$clog2(UART_TX_FIFO_DEPTH*(DATA_WIDTH/8)):0] tx_fifo_mem_left,
     output tx_ready,
     // READ BUFFER CONTROLLER PORT 
     output reg [DATA_WIDTH-1:0] rx_data,
@@ -64,14 +68,14 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
 //===============================================================//
     localparam IDEL = 3'b000, DECODE = 3'b001, DONE = 2'b01, WRITE = 2'b11, READ = 2'b10;
     localparam CR = 8'h00,
-    CSR = 8'h04, 
+    BAUD_GEN = 8'h04, 
     IER = 8'h08,
     IDR= 8'h0c,
     IMR = 8'h10,
     ISR = 8'h14, 
     TX =8'h18,
     RX=8'h1c,
-    BAUD_GEN = 8'h20;
+    CSR = 8'h20;
     localparam BYTES = DATA_WIDTH/8;
     localparam READ_TX_FIFO = 3'b001,START= 3'b010,DATA=3'b011,PARITY=3'b100,STOP= 3'b101;
     
@@ -81,10 +85,11 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
     
     reg [31:0] cntrl_reg;
     wire [35:0] status_reg;
-    reg [31:0] r_IER,r_IDR,r_ISR,r_IMR,baud_reg;
+    
     wire tx_wr_en;
     wire tx_rd_en;
-    wire [DATA_WIDTH-1:0] in_rx_data,out_rx_data;
+    wire [DATA_WIDTH-1:0] out_rx_data;
+    reg [DATA_WIDTH-1:0] in_rx_data;
     wire [7:0] in_tx_data,out_tx_data;
     wire [$clog2(UART_TX_FIFO_DEPTH):0] tx_entries;
     wire [$clog2(UART_RX_FIFO_DEPTH):0] rx_entries;
@@ -94,11 +99,14 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
     reg tx_wr_start,rx_rd_start;
     reg [7:0] uart_rx_data;
     
-    reg [15:0] w_addr,r_addr;
+    reg [7:0] w_addr,r_addr;
     reg [DATA_WIDTH-1:0] w_data,r_data;
     reg [3:0] wr_bit_counter, rd_bit_counter;
+    reg [3:0] byte_counter;
+    reg [3:0] tx_byte_counter;
+    reg [3:0] sample_counter;
     
-    assign rx_data_valid = (rx_action_state==DECODE);
+
 //===============================================================//
 //            *** STATUS BITS DECLARATION ***                    //
 //===============================================================//
@@ -109,8 +117,8 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
     wire        tx_active;
     wire        rx_active;
     wire [9:0]  rx_mem_used = rx_entries* (DATA_WIDTH/8); 
-    wire [9:0]  tx_mem_left = (UART_TX_FIFO_DEPTH - tx_entries) * (DATA_WIDTH/8); //?
-    wire        overrun_error;
+    wire [$clog2(UART_TX_FIFO_DEPTH*(DATA_WIDTH/8)):0]  tx_mem_left = (UART_TX_FIFO_DEPTH - tx_entries) * (DATA_WIDTH/8); 
+    wire        overrun_error = rx_full;
     wire        parity_error;
     reg        frame_error;
     wire [1:0]  tx_fifo_status;  
@@ -119,26 +127,71 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
 //            *** TX_FIFO SIGNAL ASSINGN  ***                    //
 //===============================================================//
     assign tx_wr_en = ( tx_fifo_state == WRITE);
+    assign rx_wr_en = ( rx_fifo_state == WRITE);
     assign in_tx_data = w_data[7:0];
     assign tx_rd_en = (uart_tx_state==READ_TX_FIFO);
-    assign tx_fifo_mem_left = (UART_TX_FIFO_DEPTH - tx_entries) * (DATA_WIDTH/8);;
+    assign rx_rd_en = (rx_action_state == DECODE && r_addr==RX);
+    assign tx_fifo_mem_left = (UART_TX_FIFO_DEPTH - tx_entries) * (DATA_WIDTH/8);
+
 //===============================================================//
 //            *** CONRTOL BITS DECLARATION ***                   //
 //===============================================================//
-    wire        tx_fifo_rst    = rst ;//cntrl_reg[0];
-    wire        rx_fifo_rst    = rst;//cntrl_reg[1];
-    wire        tx_enable      = 1;//cntrl_reg[3];
-    wire        rx_enable      = 1;//cntrl_reg[4];
-    wire        stop_bit       = 1;//cntrl_reg[5];
-    wire        parity_bit     = 0;//cntrl_reg[6];
-    wire  [3:0] data_bits      = 8;//cntrl_reg[26:23];      
+    wire        tx_fifo_rst    = cntrl_reg[0];
+    wire        rx_fifo_rst    = cntrl_reg[1];
+    wire        tx_enable      = cntrl_reg[3];
+    wire        rx_enable      = cntrl_reg[4];
+    wire        stop_bit       = cntrl_reg[5];
+    wire        parity_bit     = cntrl_reg[6];
+    wire  [3:0] data_bits      = cntrl_reg[26:23];      
     wire  [4:0] sample_rate    = cntrl_reg[13:9];
     wire  [4:0] tx_trig        = cntrl_reg[18:14];
-    wire  [3:0] rx_trig        = cntrl_reg[22:19];
+    wire  [4:0] rx_trig        = cntrl_reg[22:19];
 
-
+    reg [31:0] r_IER,r_IDR,baud_reg;
+    wire [31:0] r_IMR,r_ISR;
+    
+    wire int_tx_empty      = tx_empty;    
+    wire int_tx_full       = tx_full;     
+    wire int_rx_empty      = rx_empty;    
+    wire int_rx_full       = rx_full;     
+    wire int_tx_trigger    = ~(tx_trig)?0:(~(tx_action_state == DECODE && w_addr==TX))?0:1;    
+    wire int_rx_trigger    = ~(rx_trig)?0:(~(rx_action_state == DECODE && r_addr==RX))?0:1;     
+    wire int_parity_error  = ~(parity_error)?0:(~(tx_action_state == DECODE && w_addr==ISR))?0:1;
+    wire int_frame_error   = ~(frame_error)?0:(~(tx_action_state == DECODE && w_addr==ISR))?0:1;
+    wire int_overrun_error = ~(rx_full)?1:(~(tx_action_state == DECODE && w_addr==ISR))?1:0;
+    
 ///=======UART CONTROLLER PORT ASSIGNMENT
-    assign tx_ready = (tx_action_state == IDEL);
+    assign tx_ready = (
+    // From CR
+    (w_addr == CR && (
+        (cntrl_reg[0] && cntrl_reg[1] && tx_empty && rx_empty) || 
+        (cntrl_reg[0] && !cntrl_reg[1] && tx_empty) || 
+        (cntrl_reg[1] && !cntrl_reg[0] && rx_empty) || 
+        (!cntrl_reg[0] && !cntrl_reg[1])
+    ) && tx_action_state != IDEL) ||
+
+    // From IER
+    (w_addr == IER && tx_action_state != IDEL) ||
+
+    // From IDR
+    (w_addr == IDR && tx_action_state != IDEL) ||
+    
+    //From BAUD_GEN
+    (w_addr == BAUD_GEN  && tx_action_state != IDEL) ||
+
+    // From TX, only if FIFO is idle
+    (w_addr == TX && tx_fifo_state == IDEL && tx_action_state != IDEL)
+);
+    assign rx_data_valid = (
+    (rx_action_state == DECODE) && (
+        (r_addr == CR) ||
+        (r_addr == IMR) ||
+        (r_addr == ISR) ||
+        (r_addr == RX && !rx_empty && (rx_mem_used >= rx_trig) && rx_fifo_status[1])
+    )
+);
+
+    assign rx_done = !rx_empty;
 /*  
 |----------------------------------------------------------------|-------------------------------------------------------| 
 |                     STATUS BITS                                |                   CONTROL BITS                        |
@@ -163,6 +216,30 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
 
 
 //===============================================================//
+//               **INTERUPTS FRAME**                             //
+//===============================================================//
+ /*
+|-------------------------------------------------------|
+|                   INTERUPT BITS                        |
+|--------------------------|----------------------------|
+|         Bit Index        |       Description          |
+|--------------------------|----------------------------|
+|             0            |  Tx FIFO EMPTY             |
+|             1            |  Tx FIFO FULL              |
+|             3            |  Rx FIFO EMPTY             |
+|             4            |  Rx FIFO FULL              |
+|             5            |  Tx FIFO TRIGG             |
+|             6            |  Tx FIFO TRIGG             |
+|             7            |  PARITY ERROR              |
+|             8            |  FRAME ERROR               |
+|             9            |  OVER RUN ERROR            |
+|             10           |  CHAR TIME OUT             |
+|             11           |  BREAKDOWN                 |
+|           [12:32]        |  RESERVED                  |
+|--------------------------|----------------------------|
+*/
+
+//===============================================================//
 //    **Assign the bits of status_reg from individual wires**    //
 //===============================================================//
 
@@ -183,20 +260,24 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
     wire exp_parity = (uart_rx_state == PARITY)?^uart_rx_data:0;
     reg parity ; 
     assign parity_error = (uart_rx_state == PARITY && parity == exp_parity);
+    assign tx_active = (uart_tx_state ==IDEL);
+    assign rx_active = (uart_rx_state ==IDEL);
     
-
+    assign baud_rate = baud_reg[30:0];
+    assign baud_en = baud_reg[31];
+    assign sample_rate_o =sample_rate;
 //===============================================================//
 //               *** FIFO INSTANTION ***                         //
 //===============================================================//
  UART_FIFO #(
     .DATA_WIDTH(8),
     .DEPTH(UART_TX_FIFO_DEPTH)) TxFIFO (
-                    .rst(tx_fifo_rst),
+                    .rst(~tx_fifo_rst),
                     .wr_clk(rd_clk),
                     .wr_en(tx_wr_en),
                     .wr_data(in_tx_data),
                     .wr_ready(tx_fifo_status[0]),
-                    .rd_clk(rd_clk),
+                    .rd_clk(uart_clk),
                     .rd_en(tx_rd_en),
                     .rd_data(out_tx_data),
                     .rd_ready(tx_fifo_status[1]),
@@ -207,8 +288,8 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
  UART_FIFO #(
     .DATA_WIDTH(DATA_WIDTH),
     .DEPTH(UART_RX_FIFO_DEPTH)) RxFIFO (
-                    .rst(rx_fifo_rst),
-                    .wr_clk(rd_clk),
+                    .rst(~rx_fifo_rst),
+                    .wr_clk(uart_clk),
                     .wr_en(rx_wr_en),
                     .wr_data(in_rx_data),
                     .wr_ready(rx_fifo_status[0]),
@@ -227,8 +308,11 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
             if(rst)
                 begin
                     tx_action_state <=IDEL;
+                    rx_action_state <=IDEL;
+                    
                     tx_fifo_state <= IDEL;
-                    rd_bit_counter <= 0;
+                    baud_reg <=0;
+                    tx_byte_counter <=0;
                 end
             else
                 begin
@@ -239,9 +323,10 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                         IDEL:
                             begin
                             tx_wr_start<=0;
+                            w_addr <= tx_addr;
                             if(tx_data_valid)
                                 begin
-                                    w_addr <= tx_addr;
+                                    
                                     
                                     tx_action_state <= DECODE;
                                 end
@@ -255,15 +340,15 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                             if(tx_data[0] && tx_data[1] )
                                                 begin
                                                     tx_fifo_state <= IDEL;
-                                                    rx_fifo_state <= IDEL;
-                                                    if(tx_empty && rx_empty)
+                                                    
+                                                    if(tx_empty && rx_empty )
                                                         begin
                                                           cntrl_reg[0] <= 0;
                                                           cntrl_reg[1] <= 0;
                                                           tx_action_state<=IDEL;
                                                         end
                                                 end
-                                            else if(tx_data[0])
+                                            else if(tx_data[0] && !tx_data[1])
                                                 begin
                                                     tx_fifo_state <= IDEL;
                                                     if(tx_empty)
@@ -272,9 +357,9 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                                           tx_action_state<=IDEL;  
                                                         end
                                                 end
-                                            else if(tx_data[1])
+                                            else if(tx_data[1] && !tx_data[0])
                                                 begin
-                                                    rx_fifo_state <= IDEL;
+                                                    
                                                     if(rx_empty)
                                                         begin
                                                           cntrl_reg[1] <= 0;
@@ -308,21 +393,22 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                         begin
                                             baud_reg <= tx_data;
                                             tx_wr_start <=0;
+                                            tx_action_state<=IDEL;
                                         end
                                     default : tx_action_state<=IDEL;
                                 endcase    
                             end
                     endcase
         //===============================================================//
-        //                      *** RX WRITE LOGIC ***                   //
+        //                      *** RX READ LOGIC ***                    //
         //===============================================================//
                     
                     case(rx_action_state)
                         IDEL:
                             begin
-                            if(rx_data_valid)
+                            if(rx_en)
                                 begin
-                                    r_addr <= tx_addr;
+                                    r_addr <= rx_addr;
                                     rx_rd_start<=0;
                                     rx_action_state <= DECODE;
                                 end
@@ -347,11 +433,13 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                         end
                                     RX:
                                         begin
-                                        rx_rd_start <=1;
-                                            if(rx_fifo_state ==READ)
+                                            if(!rx_empty && (rx_mem_used >= rx_trig))
                                                 begin
-                                                    rx_rd_start <=0;
-                                                    rx_action_state<=IDEL;
+                                                   if(rx_fifo_status[1])
+                                                    begin
+                                                        rx_data <= out_rx_data;
+                                                        rx_action_state<=IDEL; 
+                                                    end
                                                 end
                                         end
         
@@ -371,6 +459,7 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                     begin
                                         tx_fifo_state <= WRITE;
                                         w_data <= tx_data;
+                                        tx_byte_counter <=0; 
                                     end
                             end
                         WRITE:
@@ -382,7 +471,7 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                             end
                         DONE:
                             begin
-                                if(((tx_entries+1) %(DATA_WIDTH/8)) == 0)
+                                if(tx_byte_counter == BYTES-1)
                                     begin
                                         tx_fifo_state <= IDEL;
                                     end
@@ -390,6 +479,7 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                     begin
                                         tx_fifo_state <= WRITE;
                                         w_data <= w_data>>8;
+                                        tx_byte_counter <= tx_byte_counter +1;
                                     end
                             end
                         default : tx_fifo_state<=IDEL;
@@ -397,16 +487,16 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                 end
         end
 
-    always@(posedge rd_clk)
+    always@(posedge uart_clk or posedge rst)
         begin
      //===============================================================//
      //                   *** UART TX OPERATION ***                   //
      //===============================================================//
-            if(tx_empty || !tx_enable)
+             if(rst)
                 begin
-                    tx <=1;
+                    wr_bit_counter <= 0;
                     uart_tx_state <= IDEL;
-                    wr_bit_counter <=0;
+                    tx <= 1;
                 end
             else
                 begin
@@ -416,6 +506,10 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                 if(!tx_empty && tx_enable)
                                     begin
                                         uart_tx_state <= READ_TX_FIFO;
+                                    end
+                                else
+                                    begin
+                                        tx <=1;
                                     end
                             end
                         READ_TX_FIFO:
@@ -460,7 +554,7 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                if(stop_bit)
                                     begin
                                         wr_bit_counter <=wr_bit_counter+1;
-                                        if(wr_bit_counter ==2)
+                                        if(wr_bit_counter ==1)
                                             begin
                                                 uart_tx_state <= IDEL;
                                                 wr_bit_counter <=0;
@@ -475,78 +569,137 @@ module UART_CONTROLLER #(parameter ADDR_WIDTH = 32,
                     endcase
                 end
         end
-    always@(posedge rd_clk)
+    always@(posedge uart_clk or posedge rst)
         begin
-            if(!rx_enable || rx_full )
+            if(rst)
                 begin
-                   rd_bit_counter <=0;
-                   uart_rx_state <=0; 
+                    rd_bit_counter <=0;
+                    uart_rx_state <=0; 
+                    byte_counter <=0;
+                    frame_error <=0;
+                    in_rx_data <=0;
+                    uart_rx_data <=0;
                 end
             else
                 begin
-                    case(uart_rx_state)
-                        IDEL:
-                            begin
-                                if(rx==0)
+                    if(!rx_enable || rx_full )
+                        begin
+                           rd_bit_counter <=0;
+                           uart_rx_state <=0; 
+                           byte_counter <=0;
+                           
+                          
+                        end
+                    else
+                        begin
+                            case(uart_rx_state)
+                                IDEL:
                                     begin
-                                        uart_rx_state <= DATA;
+                                    if(byte_counter == (DATA_WIDTH/8))
+                                        begin
+                                            byte_counter <=0;
+                                        end
+                                    if(rx==0)
+                                        begin
+                                            uart_rx_data <=0;
+                                            uart_rx_state <= DATA;
+                                        end
                                     end
-                            end
-                            
-                        DATA:
-                            begin
-                                if(rd_bit_counter == data_bits)
+                                    
+                                DATA:
                                     begin
-                                        rd_bit_counter <= 0;
-                                        if(parity_bit)
+                                        if(rd_bit_counter < data_bits-1)
                                             begin
-                                                uart_rx_state <= PARITY;
+                                                uart_rx_data [rd_bit_counter] <= rx;
+                                                rd_bit_counter <= rd_bit_counter+1;
                                             end
                                         else
                                             begin
-                                                uart_rx_state <= STOP;
+                                                 rd_bit_counter <= 0;
+                                                
+                                                if(parity_bit)
+                                                    begin
+                                                        uart_rx_state <= PARITY;
+                                                    end
+                                                else
+                                                    begin
+                                                        uart_rx_state <= STOP;
+                                                    end
                                             end
                                     end
-                                else
+                                PARITY:
                                     begin
-                                        uart_rx_data [rd_bit_counter] <= rx;
-                                        rd_bit_counter <= rd_bit_counter+1;
+                                        parity <=rx;
+                                        uart_rx_state <= STOP;
                                     end
-                            end
-                        PARITY:
-                            begin
-                                parity <=rx;
-                                uart_rx_state <= STOP;
-                            end
-                        STOP:
-                            begin
-                                if(tx==1 )
+                                STOP:
                                     begin
-                                    if(stop_bit)
-                                        begin
-                                            rd_bit_counter <=rd_bit_counter+1;
-                                            if(rd_bit_counter ==2)
+                                        if(rx==1 )
+                                            begin
+                                            
+                                            if(stop_bit)
+                                                begin
+                                                    rd_bit_counter <=rd_bit_counter+1;
+                                                    if(rd_bit_counter ==1)
+                                                        begin
+                                                            in_rx_data <= {uart_rx_data,in_rx_data[DATA_WIDTH-1:8]};
+        //                                                    if(byte_counter <= (DATA_WIDTH/8)-2) in_rx_data<= in_rx_data>>8;
+                                                            uart_rx_state <= IDEL;
+                                                            byte_counter <= byte_counter+1;
+                                                            rd_bit_counter <=0;
+                                                          
+                                                        end
+                                                end
+                                            else
                                                 begin
                                                     uart_rx_state <= IDEL;
+                                                    in_rx_data<={uart_rx_data,in_rx_data[DATA_WIDTH-1:8]};
+                                                    byte_counter <= byte_counter+1;
                                                     rd_bit_counter <=0;
                                                 end
-                                        end
-                                    else
-                                        begin
-                                            uart_rx_state <= IDEL;
-                                            rd_bit_counter <=0;
-                                        end
+                                            end
+                                        else
+                                            begin
+                                                uart_rx_state <= IDEL;
+                                                frame_error <=1;
+                                            end
                                     end
-                                else
+                                default : uart_rx_state <= IDEL;
+                            endcase
+                        end
+                end
+            end
+    always@(posedge uart_clk)
+        begin
+            if(rst)
+                begin
+                    rx_fifo_state <= IDEL;
+                end
+            else
+                begin
+     //===============================================================//
+     //             *** RX FIFO WRITE OPERATION ***                   //
+     //===============================================================//
+                    case(rx_fifo_state)
+                        IDEL:
+                            begin
+                                if(byte_counter == (DATA_WIDTH/8) )
                                     begin
-                                        uart_rx_state <= IDEL;
-                                        frame_error <=1;
+                                        rx_fifo_state<=WRITE;
                                     end
                             end
-                        default : uart_rx_state <= IDEL;
-                    endcase
+                        WRITE:
+                            begin
+                                
+                                if(rx_fifo_status[0] && rx_wr_en)
+                                    begin
+                                        rx_fifo_state <= IDEL;
+                                    end
+                            end
+                          
+                        default : rx_fifo_state<=IDEL;
+                    endcase 
                 end
+                
         end
-
-
 endmodule

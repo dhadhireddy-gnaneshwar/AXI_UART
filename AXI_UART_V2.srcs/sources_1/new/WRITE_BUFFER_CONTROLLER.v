@@ -2,11 +2,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
-// 
+//  
 // Create Date: 22.05.2025 10:37:11
 // Design Name: 
 // Module Name: WRITE_BUFFER_CONTROLLER
-// Project Name: 
+// Project Name:  
 // Target Devices: 
 // Tool Versions: 
 // Description: 
@@ -61,10 +61,10 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     output reg [ID_WIDTH-1:0] bid,
     input  bready,
     //UART CONTROLLER PORT DECLARATION
-    output reg [DATA_WIDTH-1:0] tx_data,
+    output [DATA_WIDTH-1:0] tx_data,
     output tx_data_valid,
     output reg [OFFSET_START_BITS-1:0] addr,
-    input [9:0] tx_fifo_mem_left,
+    input [$clog2(UART_TX_FIFO_DEPTH*(DATA_WIDTH/8)):0] tx_fifo_mem_left,
     input tx_ready
     );
     
@@ -81,7 +81,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     localparam TX_ADDRESS_OFFSET_END = TX_ADDRESS_OFFSET_START + (DATA_BYTES * UART_TX_FIFO_DEPTH);
     localparam TOTAL_BYTES = ((DATA_BYTES)*(UART_RX_FIFO_DEPTH+UART_TX_FIFO_DEPTH))+(3*4)-1;
     //======================== STATE DECLARATION ===================================================\\
-    localparam IDEL = 3'b000, READ_TX_DATA =3'b001, DECODE = 3'b010, SEND_DATA = 3'B011,NEW_DATA = 3'b100 , STS =2'b01, CRTL = 2'b10, INTRT = 2'b11;
+    localparam IDEL = 3'b000, READ_TX_DATA =3'b001, DECODE = 3'b010, SEND_DATA = 3'B011,NEW_DATA = 3'b100,ADDRESS_UPDATE=3'b101 , STS =2'b01, CRTL = 2'b10, INTRT = 2'b11;
     
     localparam SLVERR = 3'b010, DECERR = 3'b011,OKAY = 000;
 
@@ -130,8 +130,10 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     
     //WRITE CONTROLLER PORT LOGIC
     assign addr_read = (state==READ_TX_DATA)?1:0;
-    assign read_wdata  = (state == SEND_DATA);
-    assign tx_data_valid = (state == SEND_DATA && beat_count <= awlen+1);
+    assign read_wdata  = (state == READ_TX_DATA || state == NEW_DATA );
+    assign tx_data_valid = (state == SEND_DATA && beat_count <= awlen);
+    assign tx_data = wdata;
+    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                                                                                           //
     //                                                                                                                                           //
@@ -167,6 +169,7 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                         IDEL:
                             begin
                             beat_count <= 0;
+                            bvalid <=0;
                                 if((!awempty && !w_empty) )
                                     begin
                                         state<=READ_TX_DATA;
@@ -176,19 +179,40 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                             
                         READ_TX_DATA:
                             begin
-                                if(!addr_read_ready)
+                                if(addr_read_ready && out_data_ready)
                                     begin
                                         state<=DECODE;
                                     end                                
                             end
                         DECODE:
                             begin
-                                if(awaddr[ALIGN_BITS-1:0] == 0 && (awaddr >={BASE_ADDRESS,START_OFFSET}  && awaddr<={BASE_ADDRESS,TOTAL_BYTES}) && tx_fifo_mem_left>=((awlen+1)*(1<<awsize)))
+                                if(awaddr[ALIGN_BITS-1:0] == 0 && (awaddr >={BASE_ADDRESS,START_OFFSET}  && awaddr<={BASE_ADDRESS,TOTAL_BYTES}) )
                                     begin
-                                        state <= SEND_DATA;
-                                        r_addr <= awaddr[OFFSET_START_BITS-1:0];
+                                        if(awaddr[7:0] == 8'h18 && tx_fifo_mem_left>=((awlen+1)*(1<<awsize)))
+                                            begin
+                                                state <= SEND_DATA;
+                                                addr <= awaddr[OFFSET_START_BITS-1:0];
+                                                r_addr <= awaddr[OFFSET_START_BITS-1:0];
+                                            end
+                                        else if(awaddr[7:0] == 8'h18 && tx_fifo_mem_left<((awlen+1)*(1<<awsize))) 
+                                            begin                                                             
+                                                bvalid <= 1;
+                                                bresp <= SLVERR;
+                                                bid <= awid;
+                                                if(bvalid && bready)
+                                                    begin
+                                                        bvalid <= 0;
+                                                        state<=IDEL;
+                                                    end                      
+                                            end                                                               
+                                        else
+                                            begin
+                                                state <= SEND_DATA;
+                                                addr <= awaddr[OFFSET_START_BITS-1:0];
+                                                r_addr <= awaddr[OFFSET_START_BITS-1:0];
+                                            end
                                     end
-                                else
+                                else 
                                     begin
                                         bvalid <= 1;
                                         bresp <= SLVERR;
@@ -202,14 +226,24 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                             end
                         SEND_DATA :
                             begin
-                                if(beat_count <= awlen+1)
+                                if(awlen > 0 && beat_count < awlen )
                                     begin
-                                        tx_data <= wdata;
+                                        if( tx_ready )
+                                            begin 
+                                                state <= ADDRESS_UPDATE;
+                                                beat_count <= beat_count+1;
+                                            end
+                                    end
+                                else if(awlen ==0  )
+                                    begin
                                         addr <= r_addr;
-                                        if(read_wdata && out_data_ready)
+                                        bvalid <= 1;
+                                        bresp <= OKAY;
+                                        bid <= awid;
+                                        if(  tx_ready)
                                             begin
-                                                r_addr <=r_addr + (1<<awsize);
-                                                state <= NEW_DATA;
+                                                 bvalid <= 0 ;
+                                                state <= IDEL;
                                             end
                                     end
                                 else
@@ -227,8 +261,46 @@ module WRITE_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                             end
                         NEW_DATA:
                             begin
-                                beat_count <= beat_count+1;
-                                state <= SEND_DATA;
+                                
+                                if(out_data_ready)
+                                    begin
+                                        state <= SEND_DATA;
+                                        addr <= r_addr;
+                                    end
+                            end
+                        ADDRESS_UPDATE: 
+                            begin
+                                if(awburst == 2'b01)
+                                    begin
+                                        r_addr <= r_addr+(beat_count*(1<<awsize));
+                                    end
+                                else if(awburst == 2'b00)
+                                    begin
+                                        r_addr <= r_addr;
+                                    end
+                                else if(awburst == 2'b10 && r_addr <= (awaddr + (awlen*(1<<awsize))))
+                                    begin
+                                        r_addr <= (beat_count*(1<<awsize));
+                                    end
+                                else
+                                    begin
+                                        r_addr <= r_addr;
+                                    end
+                                if(beat_count==awlen)
+                                    begin
+                                         bvalid <= 1;
+                                        bresp <= OKAY;
+                                        bid <= awid;
+                                        if(  bvalid && bready)
+                                            begin
+                                                 bvalid <= 0 ;
+                                                state <= IDEL;
+                                            end
+                                    end
+                                else
+                                    begin
+                                        state <= NEW_DATA;
+                                    end
                             end
                     endcase
                 end

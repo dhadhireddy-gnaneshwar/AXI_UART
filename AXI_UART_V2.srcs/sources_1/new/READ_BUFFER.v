@@ -47,23 +47,9 @@ module READ_BUFFER#(
     output ar_read_ready,
     output arfull,
     output arempty,
-    output [ADDR_WIDTH+ID_WIDTH+SIZE_WIDTH+LEN_WIDTH+1:0] ar_addr_out,
+    output [ADDR_WIDTH+ID_WIDTH+SIZE_WIDTH+LEN_WIDTH+1:0] ar_addr_out
     
-    //READ DATA CHANNEL PORT DECLARATION
-    output rvalid,
-    output [DATA_WIDTH-1:0] rdata,
-    output [ID_WIDTH-1:0] rid,
-    output rlast,
-    output [RESPONSE_WIDTH-1:0] rresp,
-    input  rready,
     
-    // READ CHANNEL FIFO READ PORT DECLARATION
-    input r_fifo_wr_clk,
-    input [ID_WIDTH+DATA_WIDTH+RESPONSE_WIDTH-1:0] wr_r_fifo_data,
-    input wr_r_fifo_en,
-    output wr_r_fifo_ready,
-    output r_full,
-    output r_empty
     );
     
     AR_FIFO #(
@@ -95,32 +81,32 @@ module READ_BUFFER#(
     .ar_addr_out(ar_addr_out)
 );
 
-    R_FIFO #(
-    .ADDR_WIDTH(ADDR_WIDTH),
-    .DATA_WIDTH(DATA_WIDTH),
-    .ID_WIDTH(ID_WIDTH),
-    .SIZE_WIDTH(SIZE_WIDTH),
-    .LEN_WIDTH(LEN_WIDTH),
-    .RESPONSE_WIDTH(RESPONSE_WIDTH),
-    .R_DEPTH(R_DEPTH)
-) r_fifo_inst (
-    .r_fifo_wr_clk(r_fifo_wr_clk),
-    .wr_r_fifo_data(wr_r_fifo_data),
-    .wr_r_fifo_en(wr_r_fifo_en),
-    .wr_r_fifo_ready(wr_r_fifo_ready),
-    .r_full(r_full),
-    .r_empty(r_empty),
+//    R_FIFO #(
+//    .ADDR_WIDTH(ADDR_WIDTH),
+//    .DATA_WIDTH(DATA_WIDTH),
+//    .ID_WIDTH(ID_WIDTH),
+//    .SIZE_WIDTH(SIZE_WIDTH),
+//    .LEN_WIDTH(LEN_WIDTH),
+//    .RESPONSE_WIDTH(RESPONSE_WIDTH),
+//    .R_DEPTH(R_DEPTH)
+//) r_fifo_inst (
+//    .r_fifo_wr_clk(r_fifo_wr_clk),
+//    .wr_r_fifo_data(wr_r_fifo_data),
+//    .wr_r_fifo_en(wr_r_fifo_en),
+//    .wr_r_fifo_ready(wr_r_fifo_ready),
+//    .r_full(r_full),
+//    .r_empty(r_empty),
 
-    // Read channel
-    .aclk(aclk),
-    .areset(areset),
-    .rvalid(rvalid),
-    .rdata(rdata),
-    .rid(rid),
-    .rlast(rlast),
-    .rresp(rresp),
-    .rready(rready)
-);
+//    // Read channel
+//    .aclk(aclk),
+//    .areset(areset),
+//    .rvalid(rvalid),
+//    .rdata(rdata),
+//    .rid(rid),
+//    .rlast(rlast),
+//    .rresp(rresp),
+//    .rready(rready)
+//);
 
 
 endmodule

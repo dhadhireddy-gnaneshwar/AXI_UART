@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="AXI_TOP_TEST_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="AXI_TOP_TEST" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="15340000001fs"></ZoomEndTime>
+      <Cursor1Time time="8614645000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="183"></NameColumnWidth>
+      <ValueColumnWidth column_width="159"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="52" />
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_done" type="logic">
+      <obj_property name="ElementShortName">rx_done</obj_property>
+      <obj_property name="ObjectShortName">rx_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_data" type="array">
+      <obj_property name="ElementShortName">rx_data[63:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_data[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_data_valid" type="logic">
+      <obj_property name="ElementShortName">rx_data_valid</obj_property>
+      <obj_property name="ObjectShortName">rx_data_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_addr" type="array">
+      <obj_property name="ElementShortName">rx_addr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_addr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_en" type="logic">
+      <obj_property name="ElementShortName">rx_en</obj_property>
+      <obj_property name="ObjectShortName">rx_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx" type="logic">
+      <obj_property name="ElementShortName">rx</obj_property>
+      <obj_property name="ObjectShortName">rx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/out_rx_data" type="array">
+      <obj_property name="ElementShortName">out_rx_data[63:0]</obj_property>
+      <obj_property name="ObjectShortName">out_rx_data[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/in_rx_data" type="array">
+      <obj_property name="ElementShortName">in_rx_data[63:0]</obj_property>
+      <obj_property name="ObjectShortName">in_rx_data[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_entries" type="array">
+      <obj_property name="ElementShortName">rx_entries[5:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_entries[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_action_state" type="array">
+      <obj_property name="ElementShortName">rx_action_state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_action_state[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/uart_rx_state" type="array">
+      <obj_property name="ElementShortName">uart_rx_state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">uart_rx_state[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_fifo_state" type="array">
+      <obj_property name="ElementShortName">rx_fifo_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_fifo_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_rd_start" type="logic">
+      <obj_property name="ElementShortName">rx_rd_start</obj_property>
+      <obj_property name="ObjectShortName">rx_rd_start</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/uart_rx_data" type="array">
+      <obj_property name="ElementShortName">uart_rx_data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">uart_rx_data[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_empty" type="logic">
+      <obj_property name="ElementShortName">rx_empty</obj_property>
+      <obj_property name="ObjectShortName">rx_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_full" type="logic">
+      <obj_property name="ElementShortName">rx_full</obj_property>
+      <obj_property name="ObjectShortName">rx_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_active" type="logic">
+      <obj_property name="ElementShortName">rx_active</obj_property>
+      <obj_property name="ObjectShortName">rx_active</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_mem_used" type="array">
+      <obj_property name="ElementShortName">rx_mem_used[9:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_mem_used[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_fifo_status" type="array">
+      <obj_property name="ElementShortName">rx_fifo_status[1:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_fifo_status[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_fifo_rst" type="logic">
+      <obj_property name="ElementShortName">rx_fifo_rst</obj_property>
+      <obj_property name="ObjectShortName">rx_fifo_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_enable" type="logic">
+      <obj_property name="ElementShortName">rx_enable</obj_property>
+      <obj_property name="ObjectShortName">rx_enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_trig" type="array">
+      <obj_property name="ElementShortName">rx_trig[4:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_trig[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/int_rx_empty" type="logic">
+      <obj_property name="ElementShortName">int_rx_empty</obj_property>
+      <obj_property name="ObjectShortName">int_rx_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/int_rx_full" type="logic">
+      <obj_property name="ElementShortName">int_rx_full</obj_property>
+      <obj_property name="ObjectShortName">int_rx_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/int_rx_trigger" type="logic">
+      <obj_property name="ElementShortName">int_rx_trigger</obj_property>
+      <obj_property name="ObjectShortName">int_rx_trigger</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_wr_en" type="logic">
+      <obj_property name="ElementShortName">rx_wr_en</obj_property>
+      <obj_property name="ObjectShortName">rx_wr_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx_rd_en" type="logic">
+      <obj_property name="ElementShortName">rx_rd_en</obj_property>
+      <obj_property name="ObjectShortName">rx_rd_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/uart_clk" type="logic">
+      <obj_property name="ElementShortName">uart_clk</obj_property>
+      <obj_property name="ObjectShortName">uart_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/uart_tx_state" type="array">
+      <obj_property name="ElementShortName">uart_tx_state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">uart_tx_state[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/uart_rx_state" type="array">
+      <obj_property name="ElementShortName">uart_rx_state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">uart_rx_state[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/uart_rx_data" type="array">
+      <obj_property name="ElementShortName">uart_rx_data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">uart_rx_data[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/rx" type="logic">
+      <obj_property name="ElementShortName">rx</obj_property>
+      <obj_property name="ObjectShortName">rx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/tx" type="logic">
+      <obj_property name="ElementShortName">tx</obj_property>
+      <obj_property name="ObjectShortName">tx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/wr_clk" type="logic">
+      <obj_property name="ElementShortName">wr_clk</obj_property>
+      <obj_property name="ObjectShortName">wr_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/wr_en" type="logic">
+      <obj_property name="ElementShortName">wr_en</obj_property>
+      <obj_property name="ObjectShortName">wr_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/wr_data" type="array">
+      <obj_property name="ElementShortName">wr_data[63:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_data[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/wr_ready" type="logic">
+      <obj_property name="ElementShortName">wr_ready</obj_property>
+      <obj_property name="ObjectShortName">wr_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/rd_clk" type="logic">
+      <obj_property name="ElementShortName">rd_clk</obj_property>
+      <obj_property name="ObjectShortName">rd_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/rd_en" type="logic">
+      <obj_property name="ElementShortName">rd_en</obj_property>
+      <obj_property name="ObjectShortName">rd_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/rd_data" type="array">
+      <obj_property name="ElementShortName">rd_data[63:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_data[63:0]</obj_property>
+      <obj_property name="Radix">ASCIIRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/rd_ready" type="logic">
+      <obj_property name="ElementShortName">rd_ready</obj_property>
+      <obj_property name="ObjectShortName">rd_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/full" type="logic">
+      <obj_property name="ElementShortName">full</obj_property>
+      <obj_property name="ObjectShortName">full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/empty" type="logic">
+      <obj_property name="ElementShortName">empty</obj_property>
+      <obj_property name="ObjectShortName">empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/used_entries" type="array">
+      <obj_property name="ElementShortName">used_entries[5:0]</obj_property>
+      <obj_property name="ObjectShortName">used_entries[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/mem" type="array">
+      <obj_property name="ElementShortName">mem[0:31][63:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[0:31][63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/wr_state" type="array">
+      <obj_property name="ElementShortName">wr_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/rd_state" type="array">
+      <obj_property name="ElementShortName">rd_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/wr_pointer" type="array">
+      <obj_property name="ElementShortName">wr_pointer[5:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_pointer[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/rd_pointer" type="array">
+      <obj_property name="ElementShortName">rd_pointer[5:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pointer[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/RxFIFO/sync_1" type="array">
+      <obj_property name="ElementShortName">sync_1[63:0]</obj_property>
+      <obj_property name="ObjectShortName">sync_1[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/UART_CONTROL/byte_counter" type="array">
+      <obj_property name="ElementShortName">byte_counter[3:0]</obj_property>
+      <obj_property name="ObjectShortName">byte_counter[3:0]</obj_property>
+   </wvobject>
+</wave_config>

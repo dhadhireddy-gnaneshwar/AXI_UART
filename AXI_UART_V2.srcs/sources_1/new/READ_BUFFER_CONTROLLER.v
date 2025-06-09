@@ -50,24 +50,33 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     input arempty,
     input [ADDR_WIDTH+ID_WIDTH+SIZE_WIDTH+LEN_WIDTH+1:0] ar_addr_out,
     //FIFO R READ PORTS
-    input r_fifo_wr_clk,
+//    input r_fifo_wr_clk,
     output [ID_WIDTH+DATA_WIDTH+RESPONSE_WIDTH-1:0] wr_r_fifo_data,
     output reg wr_r_fifo_en,
     input wr_r_fifo_ready,
-    input r_full,
-    input r_empty,
+//    input r_full,
+//    input r_empty,
      
     //UART CONTROLLER PORT DECLARATION
     input [DATA_WIDTH-1:0] rx_data,
     input rx_data_valid,
     output [OFFSET_START_BITS-1:0] addr,
     output rx_en,
-    input char_time_out
+//    input char_time_out,
+    
+    //AXI READ PORT CHANNEL
+    input aclk,
+    output rvalid,
+    output [DATA_WIDTH-1:0] rdata,
+    output [ID_WIDTH-1:0] rid,
+    output rlast,
+    output reg [RESPONSE_WIDTH-1:0] rresp,
+    input rready 
     );
     
     //======================= DATA BYTE AND TOTAL ADDRESS WIDTH CALCULATION ========================\\    
     localparam DATA_BYTES = DATA_WIDTH/8;
-    localparam BYTES_WIDTH = $clog2(DATA_BYTES);
+    localparam BYTES_WIDTH = $clog2(LEN_WIDTH);
     localparam ALIGN_BITS = $clog2(ADDR_WIDTH/8);
     localparam AW_FIFO_WIDTH = ADDR_WIDTH+LEN_WIDTH+SIZE_WIDTH+ID_WIDTH+2;
     //========================ADDRESS OFFSET CALCULATION ===========================================\\
@@ -80,16 +89,17 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     localparam RX_ADDRESS_OFFSET_END = RX_ADDRESS_OFFSET_START + (DATA_BYTES * UART_RX_FIFO_DEPTH);
     localparam TOTAL_BYTES = ((DATA_BYTES)*(UART_RX_FIFO_DEPTH+UART_TX_FIFO_DEPTH))+(3*4)-1;
     //======================== READ_STATE DECLARATION ===================================================\\
-    localparam IDEL = 3'b000, READ_RX_ADDR =3'b001, DECODE = 3'b010, READ_RX_DATA = 3'B011 ,WRITE_BACK = 3'b100, STS =2'b01, CRTL = 2'b10, INTRT = 2'b11;
+    localparam IDEL = 3'b000, READ_RX_ADDR =3'b001, DECODE = 3'b010, READ_RX_DATA = 3'B011 ,WRITE_BACK = 3'b100,SEND_AXI=3'b101, STS =2'b01, CRTL = 2'b10, INTRT = 2'b11;
     
     localparam SLVERR = 3'b010, DECERR = 3'b011,OKAY = 000;
 
     reg [BYTES_WIDTH:0] read_beat_count ;
     reg [2:0] read_state;
+    reg [2:0] axi_read_state;
     reg [OFFSET_START_BITS-1:0] r_addr;
     //STATUS REG DATA
-    wire r_data_ready, over_run, parity_error, frame_error, rx_fifo_full, rx_fifo_empty, tx_fifo_empty, tx_fifo_full;
-    wire [3:0] tx_fifo_left,rx_fifo_left;
+//    wire r_data_ready, over_run, parity_error, frame_error, rx_fifo_full, rx_fifo_empty, tx_fifo_empty, tx_fifo_full;
+//    wire [3:0] tx_fifo_left,rx_fifo_left;
     
     //AR CHANNEL DATA
     wire [ADDR_WIDTH-1:0] araddr;
@@ -97,12 +107,9 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     wire [LEN_WIDTH-1 :0] arlen;
     wire [1:0] arburst;
     wire [ID_WIDTH-1:0] arid;
+    wire char_time_out;
     
-    
-    
-    //R CHANNEL DATA
-    wire rlast; 
-    reg [RESPONSE_WIDTH-1:0] rresp;
+  
     
     // ======DE-FRAMING THE AWFIFO OUT_ADDR===========\\
 //    assign awburst = out_addr[AW_FIFO_WIDTH-1 : AW_FIFO_WIDTH-2];
@@ -129,10 +136,17 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     
     
     //READ CONTROLLER PORT LOGIC
-    assign rlast = (read_beat_count == arlen || rresp != OKAY);
+    assign rlast = (read_beat_count == arlen);
     assign wr_r_fifo_data  = {arid,rx_data,rresp};
     assign rx_en = (read_state == READ_RX_DATA);
-    assign addr = araddr[7:0];
+    assign addr = r_addr[7:0];
+    
+    
+    
+    // R CHANNEL PORT ASSIGNMENT
+    assign rdata = rx_data;
+    assign rvalid = (axi_read_state == SEND_AXI);
+    assign rid = arid;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                                                                                           //
     //                                                                                                                                           //
@@ -152,14 +166,22 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
     //                                                                                                                                           //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
+    wire done = (read_state==READ_RX_DATA && char_time_out);
+    TIMER #(.COUNT(32'd100_000)) WRITE_CNTRL_TIMER (
+    .clk(rd_clk),
+    .in_trig(rvalid),
+    .rst_trig(rx_data_valid),
+    .rst(rst),
+    .check(),
+    .trig(char_time_out)
+    );
     always@(posedge rd_clk)
         begin
             if(rst)
                 begin
                     read_state<=IDEL;
-                    read_beat_count <= 0;
                     r_addr <=0;
-                    rresp <= OKAY;
+                    
                    
                 end
             else
@@ -167,8 +189,7 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                     case(read_state)
                         IDEL:
                             begin
-                            read_beat_count <=0;
-                                if(!arempty && !r_empty)
+                                if(!arempty )
                                     begin
                                         read_state <= READ_RX_ADDR;
                                     end
@@ -181,15 +202,14 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                     begin
                                         read_state <= DECODE;
                                         ar_addr_read <= 0;
+                                        r_addr <= araddr;
                                     end
-                            
                             end
                         DECODE :
                             begin
                                  if(araddr[ALIGN_BITS-1:0] == 0 && (araddr >={BASE_ADDRESS,START_OFFSET}  && araddr<={BASE_ADDRESS,END_OFFSET}) /*&& tx_fifo_mem_left>=((awlen+1)*(1<<awsize))*/)
                                     begin
                                         read_state <= READ_RX_DATA;
-                                        r_addr <= araddr[OFFSET_START_BITS-1:0];
                                     end
                                  else
                                     begin
@@ -209,14 +229,14 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                             begin
                                                 wr_r_fifo_en <= 1;
                                                 rresp <= OKAY;
-                                                if(wr_r_fifo_en && wr_r_fifo_ready && read_beat_count == arlen+1)
+                                                if(wr_r_fifo_en && wr_r_fifo_ready && read_beat_count == arlen)
                                                     begin
                                                         read_state <= IDEL;
-                                                        read_beat_count <= 0;
+                                                        
                                                     end
                                                 else
                                                     begin
-                                                        read_beat_count <= read_beat_count +1;
+                                                        read_state <= WRITE_BACK;
                                                     end
                                             end
                                     end
@@ -229,9 +249,57 @@ module READ_BUFFER_CONTROLLER #(parameter ADDR_WIDTH = 32,
                                                 read_state <= IDEL;
                                             end
                                     end
+                            
+                            end
+                        WRITE_BACK:
+                            begin
+                                if(rready)
+                                    begin
+                                        if(rlast)
+                                            begin
+                                                read_state <= IDEL;
+                                            end
+                                        else
+                                            begin
+                                                read_state <= READ_RX_DATA;
+                                            end
+                                    end
+                                
                             end
                     endcase
                 
+                end
+        end
+    always@(posedge aclk)
+        begin
+            if(rst)
+                begin
+                   read_beat_count <=0;
+                   axi_read_state <= IDEL;
+                end
+            else
+                begin
+                    case(axi_read_state)
+                        IDEL:
+                            begin
+                                if(read_beat_count == arlen || read_state== IDEL || char_time_out)
+                                    begin
+                                        read_beat_count <=0;
+                                    end
+                                if(read_state == WRITE_BACK)
+                                    begin
+                                        axi_read_state <= SEND_AXI;
+                                    end
+                            end
+                        SEND_AXI:
+                            begin
+                                if(rready)
+                                    begin
+                                        axi_read_state <= IDEL;
+                                        read_beat_count <= read_beat_count+1;
+                                    end
+                            end
+                    endcase
                 end
         end
     

@@ -33,7 +33,7 @@ module FIFO #(parameter DATA_WIDTH=32,
         input rd_clk,
         input rd_en,
         output reg [DATA_WIDTH-1:0] rd_data,
-        output rd_ready,
+        output reg rd_ready,
 //======FLAG PORT DECLARATION =====\\
         output full,
         output empty          
@@ -52,7 +52,7 @@ module FIFO #(parameter DATA_WIDTH=32,
     reg [DATA_WIDTH-1 : 0] sync_1;
     
     assign wr_ready = (!(wr_state==IDEL));
-    assign rd_ready = (!(rd_state==IDEL));
+    
     assign full =  rst?0:((wr_pointer + 1) % DEPTH) == rd_pointer;
     assign empty = (wr_pointer == rd_pointer);
     
@@ -81,6 +81,7 @@ module FIFO #(parameter DATA_WIDTH=32,
                                     begin
                                         mem[wr_pointer] <= sync_1;;
                                         wr_pointer <= (wr_pointer +1)%DEPTH;
+                                        
                                         wr_state <= IDEL;
                                     end
                                 else
@@ -106,6 +107,7 @@ module FIFO #(parameter DATA_WIDTH=32,
                     case(rd_state)
                         IDEL:
                             begin
+                                rd_ready <=0;
                                 if(rd_en)
                                     begin
                                         rd_state <= READ;
@@ -118,6 +120,7 @@ module FIFO #(parameter DATA_WIDTH=32,
                                         rd_data <= mem [rd_pointer];
                                         rd_pointer <= (rd_pointer +1)%DEPTH;
                                         rd_state <= IDEL;
+                                        rd_ready <=1;
                                     end
                             end
                         default: rd_state <= IDEL;

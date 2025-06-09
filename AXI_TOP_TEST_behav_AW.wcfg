@@ -12,116 +12,20 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="268208fs"></ZoomEndTime>
-      <Cursor1Time time="1000000fs"></Cursor1Time>
+      <ZoomEndTime time="7260001fs"></ZoomEndTime>
+      <Cursor1Time time="0fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="322"></NameColumnWidth>
-      <ValueColumnWidth column_width="126"></ValueColumnWidth>
+      <ValueColumnWidth column_width="102"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="26" />
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/rst" type="logic">
-      <obj_property name="ElementShortName">rst</obj_property>
-      <obj_property name="ObjectShortName">rst</obj_property>
+   <WVObjectSize size="2" />
+   <wvobject fp_name="/AXI_TOP_TEST/dut/read_buffer_ctrl_inst/r_empty" type="logic">
+      <obj_property name="ElementShortName">r_empty</obj_property>
+      <obj_property name="ObjectShortName">r_empty</obj_property>
    </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/wr_clk" type="logic">
-      <obj_property name="ElementShortName">wr_clk</obj_property>
-      <obj_property name="ObjectShortName">wr_clk</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/wr_en" type="logic">
-      <obj_property name="ElementShortName">wr_en</obj_property>
-      <obj_property name="ObjectShortName">wr_en</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/wr_data" type="array">
-      <obj_property name="ElementShortName">wr_data[7:0]</obj_property>
-      <obj_property name="ObjectShortName">wr_data[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/wr_ready" type="logic">
-      <obj_property name="ElementShortName">wr_ready</obj_property>
-      <obj_property name="ObjectShortName">wr_ready</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/rd_clk" type="logic">
-      <obj_property name="ElementShortName">rd_clk</obj_property>
-      <obj_property name="ObjectShortName">rd_clk</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/rd_en" type="logic">
-      <obj_property name="ElementShortName">rd_en</obj_property>
-      <obj_property name="ObjectShortName">rd_en</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/rd_data" type="array">
-      <obj_property name="ElementShortName">rd_data[7:0]</obj_property>
-      <obj_property name="ObjectShortName">rd_data[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/rd_ready" type="logic">
-      <obj_property name="ElementShortName">rd_ready</obj_property>
-      <obj_property name="ObjectShortName">rd_ready</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/full" type="logic">
-      <obj_property name="ElementShortName">full</obj_property>
-      <obj_property name="ObjectShortName">full</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/empty" type="logic">
-      <obj_property name="ElementShortName">empty</obj_property>
-      <obj_property name="ObjectShortName">empty</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/used_entries" type="array">
-      <obj_property name="ElementShortName">used_entries[5:0]</obj_property>
-      <obj_property name="ObjectShortName">used_entries[5:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/mem" type="array">
-      <obj_property name="ElementShortName">mem[0:31][7:0]</obj_property>
-      <obj_property name="ObjectShortName">mem[0:31][7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/wr_state" type="array">
-      <obj_property name="ElementShortName">wr_state[1:0]</obj_property>
-      <obj_property name="ObjectShortName">wr_state[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/rd_state" type="array">
-      <obj_property name="ElementShortName">rd_state[1:0]</obj_property>
-      <obj_property name="ObjectShortName">rd_state[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/wr_pointer" type="array">
-      <obj_property name="ElementShortName">wr_pointer[5:0]</obj_property>
-      <obj_property name="ObjectShortName">wr_pointer[5:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/rd_pointer" type="array">
-      <obj_property name="ElementShortName">rd_pointer[5:0]</obj_property>
-      <obj_property name="ObjectShortName">rd_pointer[5:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/sync_1" type="array">
-      <obj_property name="ElementShortName">sync_1[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sync_1[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/DATA_WIDTH" type="array">
-      <obj_property name="ElementShortName">DATA_WIDTH[31:0]</obj_property>
-      <obj_property name="ObjectShortName">DATA_WIDTH[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/DEPTH" type="array">
-      <obj_property name="ElementShortName">DEPTH[31:0]</obj_property>
-      <obj_property name="ObjectShortName">DEPTH[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/COUNTER_WIDTH" type="array">
-      <obj_property name="ElementShortName">COUNTER_WIDTH[31:0]</obj_property>
-      <obj_property name="ObjectShortName">COUNTER_WIDTH[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/BYTES" type="array">
-      <obj_property name="ElementShortName">BYTES[31:0]</obj_property>
-      <obj_property name="ObjectShortName">BYTES[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/BYTE_POINTER_WIDTH" type="array">
-      <obj_property name="ElementShortName">BYTE_POINTER_WIDTH[31:0]</obj_property>
-      <obj_property name="ObjectShortName">BYTE_POINTER_WIDTH[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/IDEL" type="array">
-      <obj_property name="ElementShortName">IDEL[1:0]</obj_property>
-      <obj_property name="ObjectShortName">IDEL[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/WRITE" type="array">
-      <obj_property name="ElementShortName">WRITE[1:0]</obj_property>
-      <obj_property name="ObjectShortName">WRITE[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/AXI_TOP_TEST/dut/uart_controller_inst/TxFIFO/READ" type="array">
-      <obj_property name="ElementShortName">READ[1:0]</obj_property>
-      <obj_property name="ObjectShortName">READ[1:0]</obj_property>
+   <wvobject fp_name="/AXI_TOP_TEST/dut/read_buffer_ctrl_inst/arempty" type="logic">
+      <obj_property name="ElementShortName">arempty</obj_property>
+      <obj_property name="ObjectShortName">arempty</obj_property>
    </wvobject>
 </wave_config>

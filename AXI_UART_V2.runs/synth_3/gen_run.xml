@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_3" LaunchPart="xc7z045ffg900-2" LaunchTime="1748862487">
+<GenRun Id="synth_3" LaunchPart="xc7z045ffg900-2" LaunchTime="1749464446">
   <File Type="PA-TCL" Name="AXI_TOP_WRAPPER.tcl"/>
+  <File Type="RDS-PROPCONSTRS" Name="AXI_TOP_WRAPPER_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="AXI_TOP_WRAPPER_reports.tcl"/>
   <File Type="RDS-RDS" Name="AXI_TOP_WRAPPER.vds"/>
   <File Type="RDS-UTIL" Name="AXI_TOP_WRAPPER_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="AXI_TOP_WRAPPER_utilization_synth.pb"/>
   <File Type="RDS-DCP" Name="AXI_TOP_WRAPPER.dcp"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="AXI_TOP_WRAPPER_timing_summary_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="AXI_TOP_WRAPPER_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/AR_FIFO.v">
@@ -99,9 +102,23 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PSRCDIR/sources_1/new/BAUD_GENRATOR.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PSRCDIR/sources_1/new/AXI_SLAVE.v">
       <FileInfo>
         <Attr Name="UserDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/TIMER.v">
+      <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>

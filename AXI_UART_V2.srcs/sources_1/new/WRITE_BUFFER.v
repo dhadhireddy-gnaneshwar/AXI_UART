@@ -2,15 +2,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
-// 
+//    
 // Create Date: 15.05.2025 17:01:23
 // Design Name: 
 // Module Name: WRITE_BUFFER
-// Project Name: 
-// Target Devices: 
+// Project Name:  
+// Target Devices:  
 // Tool Versions: 
 // Description: 
-// 
+//  
 // Dependencies: 
 // 
 // Revision:

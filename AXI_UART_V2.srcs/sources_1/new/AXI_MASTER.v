@@ -82,7 +82,6 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
     
     
     reg [1:0] aw_state,w_state,b_state,ar_state,r_state;
-    reg [1:0] aw_next_state,w_next_state,b_next_state,ar_next_state,r_next_state;
     reg [LEN_WIDTH-1:0] r_awlen,r_arlen;
     reg [LEN_WIDTH-1:0] beat_counter;
     parameter IDEL= 2'b00, START=2'b01,DATA = 2'b10;
@@ -90,7 +89,6 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
     initial
         begin
             {aw_state,w_state,b_state,ar_state,r_state}=10'h0;
-            {aw_next_state,w_next_state,b_next_state,ar_next_state,r_next_state}=10'h0;
         end
 //     assign r_awlen = (((aw_state==START)&& awvalid) ) ? in_len : r_awlen;
 //     assign r_arlen = (((ar_state==START)&& arvalid)  ) ? in_len : r_awlen;
@@ -135,7 +133,6 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
             if(areset)
                 begin
                     {aw_state,w_state,b_state,ar_state,r_state}<=10'h0;
-                    {aw_next_state,w_next_state,b_next_state,ar_next_state,r_next_state}<=10'h0;
                     beat_counter<=0;
                 end
             else
@@ -148,7 +145,7 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
                                 if(trigger)
                                     begin
                                        aw_state<= START;
-                                       r_awlen <= in_len;
+                                       
                                     end
                             end
                         START:
@@ -156,7 +153,7 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
                                 if(awvalid && awready)
                                     begin
                                         aw_state <= IDEL;
-                                       
+                                        r_awlen <= in_len;
                                         
                                     end
                             end
@@ -176,7 +173,7 @@ module AXI_MASTER #(parameter ADDR_WIDTH=32,
                             end
                         START:
                             begin
-                                if(beat_counter == r_awlen+1)
+                                if(beat_counter == r_awlen)
                                     begin
                                         w_state <= IDEL; 
                                         beat_counter <= 0;
